@@ -6,18 +6,13 @@ Content-Type: application/json
 POST http://localhost:9090/api/recipeswiper/new/group
 Content-Type: application/json
 
-{
-  "groupToken": "#test#1234"
-}
-
 ###
 
 POST http://localhost:9090/api/recipeswiper/new/user
 Content-Type: application/json
 
 {
-  "username": "marc",
-  "userToken": "#test#12345"
+  "username": "Marc"
 }
 
 ###
@@ -26,6 +21,25 @@ POST http://localhost:9090/api/recipeswiper/join
 Content-Type: application/json
 
 {
-  "groupToken": "#test#1234",
-  "userToken": "#test#12345"
+  "groupToken": "3247f304-b9c7-4e3d-b518-c2c9ed07238f",
+  "userToken": "e8965b5b-b572-4873-af10-bf1dd6e18619"
+}
+
+###
+
+GET http://localhost:9090/api/recipeswiper/3247f304-b9c7-4e3d-b518-c2c9ed07238f/load/recipes
+Content-Type: application/json
+
+###
+
+GET http://localhost:9090/api/recipeswiper/3247f304-b9c7-4e3d-b518-c2c9ed07238f/get/recipes
+Content-Type: application/json
+
+###
+
+POST http://localhost:9090/api/recipeswiper/3247f304-b9c7-4e3d-b518-c2c9ed07238f/like
+Content-Type: application/json
+
+{
+  "recipeId": 1
 }

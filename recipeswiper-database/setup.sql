@@ -7,6 +7,7 @@ DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS group_recipes;
 DROP TABLE IF EXISTS recipes;
 DROP TABLE IF EXISTS `groups`;
+DROP TABLE IF EXISTS recipe_votes;
 
 CREATE TABLE `groups`
 (
@@ -45,7 +46,18 @@ CREATE TABLE group_recipes
     id        INT AUTO_INCREMENT PRIMARY KEY,
     recipe_id INT NOT NULL,
     group_id  INT NOT NULL,
-    likes     INT DEFAULT 0,
+    FOREIGN KEY (recipe_id) REFERENCES recipes (id),
+    FOREIGN KEY (group_id) REFERENCES `groups` (id)
+);
+
+CREATE TABLE recipe_votes
+(
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    user_id   INT                      NOT NULL,
+    recipe_id INT                      NOT NULL,
+    group_id  INT                      NOT NULL,
+    vote      ENUM ('LIKE', 'DISLIKE') NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (recipe_id) REFERENCES recipes (id),
     FOREIGN KEY (group_id) REFERENCES `groups` (id)
 );

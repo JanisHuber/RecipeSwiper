@@ -1,11 +1,24 @@
 package ch.janishuber.recipeswiper.adapter.persistence.Entity;
 
+
+import jakarta.persistence.*;
+
+
+@Entity
+@Table(name = "recipes")
 public class RecipeEntity {
-    private int recipeId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+    @Column(name = "title")
     private String title;
+    @Column(name = "description")
     private String description;
+    @Column(name = "ingredients")
     private String ingredients;
+    @Column(name = "instructions")
     private String instructions;
+    @Column(name = "image_url")
     private String imageUrl;
 
     public RecipeEntity() {}
@@ -19,11 +32,11 @@ public class RecipeEntity {
     }
 
     public int getRecipeId() {
-        return recipeId;
+        return id;
     }
 
     public void setRecipeId(int recipeId) {
-        this.recipeId = recipeId;
+        this.id = recipeId;
     }
 
     public String getTitle() {

@@ -17,8 +17,8 @@ public class GroupRepository {
     private EntityManager em;
 
     @Transactional
-    public int save(Group group) {
-        GroupEntity groupEntity = new GroupEntity(group.groupToken());
+    public int save(String token) {
+        GroupEntity groupEntity = new GroupEntity(token);
         em.persist(groupEntity);
         em.flush();
         return groupEntity.getId();

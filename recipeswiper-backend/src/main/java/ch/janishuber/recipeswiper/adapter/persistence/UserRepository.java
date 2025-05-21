@@ -15,8 +15,8 @@ public class UserRepository {
     private EntityManager em;
 
     @Transactional
-    public int save(User user) {
-        UserEntity userEntity = new UserEntity(user.username(), user.userToken());
+    public int save(String username, String token) {
+        UserEntity userEntity = new UserEntity(username, token);
         em.persist(userEntity);
         em.flush();
         return userEntity.getId();

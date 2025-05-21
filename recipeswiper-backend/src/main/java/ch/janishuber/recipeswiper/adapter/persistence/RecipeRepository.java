@@ -21,6 +21,7 @@ public class RecipeRepository {
         em.flush();
     }
 
+    @Transactional
     public Optional<Recipe> getRecipe(int recipeId) {
         RecipeEntity entity = em.find(RecipeEntity.class, recipeId);
         if (entity == null) {
