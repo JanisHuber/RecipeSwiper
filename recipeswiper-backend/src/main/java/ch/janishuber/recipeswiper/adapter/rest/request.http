@@ -1,0 +1,31 @@
+POST http://localhost:9090/api/recipeswiper/new/recipe
+Content-Type: application/json
+
+###
+
+POST http://localhost:9090/api/recipeswiper/new/group
+Content-Type: application/json
+
+{
+  "groupToken": "#test#1234"
+}
+
+###
+
+POST http://localhost:9090/api/recipeswiper/new/user
+Content-Type: application/json
+
+{
+  "username": "marc",
+  "userToken": "#test#12345"
+}
+
+###
+
+POST http://localhost:9090/api/recipeswiper/join
+Content-Type: application/json
+
+{
+  "groupToken": "#test#1234",
+  "userToken": "#test#12345"
+}
