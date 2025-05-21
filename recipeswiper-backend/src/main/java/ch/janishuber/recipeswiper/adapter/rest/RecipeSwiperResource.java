@@ -5,12 +5,9 @@ import ch.janishuber.recipeswiper.adapter.persistence.GroupRepository;
 import ch.janishuber.recipeswiper.adapter.persistence.RecipeRepository;
 import ch.janishuber.recipeswiper.adapter.persistence.UserRepository;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
-import ch.janishuber.recipeswiper.domain.AddTestingRecipes;
 import ch.janishuber.recipeswiper.domain.Recipe;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
