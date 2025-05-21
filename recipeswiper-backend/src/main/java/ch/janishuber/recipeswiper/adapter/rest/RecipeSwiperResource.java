@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import ch.janishuber.recipeswiper.domain.Recipe;
+import ch.janishuber.recipeswiper.domain.User;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -49,6 +50,17 @@ public class RecipeSwiperResource {
         String token = UUID.randomUUID().toString();
         int userId = userRepository.save(username, token);
         return Response.ok("User created with ID: " + userId + " & with token: " + token).build();
+    }
+
+    @GET
+    @Path("/{userToken}/user")
+    public Response getUser(@PathParam("userToken") String userToken) {
+        Optional<User> user = userRepository.getUser(userToken);
+        if (user.isPresent()) {
+            return Response.ok(user.get()).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
     }
 
     @POST

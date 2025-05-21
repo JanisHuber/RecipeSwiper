@@ -21,7 +21,9 @@ public class RecipeVotesRepository {
     }
 
     private boolean hasUserAlreadyVoted(int recipeId, int userId) {
-        return em.createQuery("SELECT COUNT(v) FROM RecipeVotesEntity v WHERE v.recipe_id = :recipeId AND v.user_id = :userId", Long.class)
+        return em.createQuery(
+                "SELECT COUNT(v) FROM RecipeVotesEntity v WHERE v.recipe_id = :recipeId AND v.user_id = :userId",
+                Long.class)
                 .setParameter("recipeId", recipeId)
                 .setParameter("userId", userId)
                 .getSingleResult() > 0;

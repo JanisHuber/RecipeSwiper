@@ -7,6 +7,7 @@ import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
 import java.util.List;
 
 @RequestScoped
@@ -29,10 +30,10 @@ public class GroupRecipesRepository {
 
     public List<Recipe> getAllRecipes(int groupId) {
         List<RecipeEntity> recipeEntities = em.createQuery("""
-        SELECT r FROM RecipeEntity r
-        JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
-        WHERE gr.group_id = :groupId
-    """, RecipeEntity.class)
+                            SELECT r FROM RecipeEntity r
+                            JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
+                            WHERE gr.group_id = :groupId
+                        """, RecipeEntity.class)
                 .setParameter("groupId", groupId)
                 .getResultList();
 
@@ -47,7 +48,6 @@ public class GroupRecipesRepository {
                 .toList();
     }
 
-    @Transactional
     public List<Recipe> getAllRecipes(String groupToken) {
         return getAllRecipes(convertTokenToGroupId(groupToken));
     }

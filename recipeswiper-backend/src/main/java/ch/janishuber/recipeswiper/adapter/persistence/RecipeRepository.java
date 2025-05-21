@@ -16,18 +16,19 @@ public class RecipeRepository {
 
     @Transactional
     public void save(Recipe recipe) {
-        RecipeEntity recipeEntity = new RecipeEntity(recipe.title(), recipe.description(), recipe.image_url(), recipe.ingredients(), recipe.instructions());
+        RecipeEntity recipeEntity = new RecipeEntity(recipe.title(), recipe.description(), recipe.image_url(),
+                recipe.ingredients(), recipe.instructions());
         em.persist(recipeEntity);
         em.flush();
     }
 
-    @Transactional
     public Optional<Recipe> getRecipe(int recipeId) {
         RecipeEntity entity = em.find(RecipeEntity.class, recipeId);
         if (entity == null) {
             return Optional.empty();
         }
-        Recipe recipe = new Recipe(entity.getRecipeId(), entity.getTitle(), entity.getDescription(), entity.getIngredients(), entity.getInstructions(), entity.getImageUrl());
+        Recipe recipe = new Recipe(entity.getRecipeId(), entity.getTitle(), entity.getDescription(),
+                entity.getIngredients(), entity.getInstructions(), entity.getImageUrl());
         return Optional.of(recipe);
     }
 

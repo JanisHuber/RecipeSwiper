@@ -59,9 +59,9 @@ public class GroupRepository {
 
     private boolean isUserAlreadyInGroup(int userId, int groupId) {
         Long count = em.createQuery("""
-            SELECT COUNT(utg) FROM UserToGroupEntity utg
-            WHERE utg.user_id = :userId AND utg.group_id = :groupId
-            """, Long.class)
+                SELECT COUNT(utg) FROM UserToGroupEntity utg
+                WHERE utg.user_id = :userId AND utg.group_id = :groupId
+                """, Long.class)
                 .setParameter("userId", userId)
                 .setParameter("groupId", groupId)
                 .getSingleResult();

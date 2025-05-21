@@ -31,6 +31,10 @@ public class UserRepository {
         return Optional.of(user);
     }
 
+    public Optional<User> getUser(String token) {
+        return getUser(convertTokenToUserId(token));
+    }
+
     public UserEntity findUserByToken(String token) {
         try {
             return em.createQuery("SELECT u FROM UserEntity u WHERE u.user_token = :token", UserEntity.class)
@@ -39,5 +43,11 @@ public class UserRepository {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    private int convertTokenToUserId(String userToken) {
+        return em.createQuery("SELECT u.id FROM UserEntity u WHERE u.user_token = :token", Integer.class)
+                .setParameter("token", userToken)
+                .getSingleResult();
     }
 }
