@@ -25,7 +25,7 @@ public class GroupRecipesRepository {
 
     @Transactional
     public void addRecipeToGroup(int recipeId, String groupToken) {
-        addRecipeToGroup(convertTokenToGroupId(groupToken), recipeId);
+        addRecipeToGroup(recipeId, convertTokenToGroupId(groupToken));
     }
 
     public List<Recipe> getAllRecipes(int groupId) {

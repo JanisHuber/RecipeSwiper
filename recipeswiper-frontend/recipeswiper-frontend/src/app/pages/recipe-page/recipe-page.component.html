@@ -1,0 +1,7 @@
+<p>recipe-page works!</p>
+<button (click)="loadRecipes()">Load Recipes</button>
+<button (click)="getRecipes()">Get Recipes</button>
+<div *ngFor="let recipe of recipes">
+    <h3>{{recipe.title}}</h3>
+    <p>{{recipe.description}}</p>
+</div>

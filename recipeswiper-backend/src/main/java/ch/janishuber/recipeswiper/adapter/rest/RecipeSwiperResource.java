@@ -1,23 +1,27 @@
 package ch.janishuber.recipeswiper.adapter.rest;
 
+import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
 import ch.janishuber.recipeswiper.adapter.persistence.GroupRecipesRepository;
 import ch.janishuber.recipeswiper.adapter.persistence.GroupRepository;
 import ch.janishuber.recipeswiper.adapter.persistence.RecipeRepository;
 import ch.janishuber.recipeswiper.adapter.persistence.UserRepository;
+import ch.janishuber.recipeswiper.adapter.rest.dto.RequestCreateUser;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import ch.janishuber.recipeswiper.domain.Recipe;
 import ch.janishuber.recipeswiper.domain.User;
+import ch.janishuber.recipeswiper.domain.Group;
+import ch.janishuber.recipeswiper.domain.Recipe;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/recipeswiper")
-@Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class RecipeSwiperResource {
 
     @Inject
@@ -41,15 +45,19 @@ public class RecipeSwiperResource {
     public Response newGroup() {
         String token = UUID.randomUUID().toString();
         int groupId = groupRepository.save(token);
-        return Response.ok("Group created with ID: " + groupId + " & with token: " + token).build();
+        Group group = new Group(groupId, token);
+        return Response.ok(group).build();
     }
 
     @POST
     @Path("/new/user")
-    public Response newUser(String username) {
+    public Response newUser(RequestCreateUser requestCreateUser) {
         String token = UUID.randomUUID().toString();
-        int userId = userRepository.save(username, token);
-        return Response.ok("User created with ID: " + userId + " & with token: " + token).build();
+        int userId = userRepository.save(requestCreateUser.username(), token);
+
+        Optional<Group> userGroup = groupRepository.getGroupFromUser(userId);
+        User user = userGroup.map(group -> new User(userId, requestCreateUser.username(), token, group.groupToken())).orElseGet(() -> new User(userId, requestCreateUser.username(), token, null));
+        return Response.ok(user).build();
     }
 
     @GET
@@ -57,7 +65,12 @@ public class RecipeSwiperResource {
     public Response getUser(@PathParam("userToken") String userToken) {
         Optional<User> user = userRepository.getUser(userToken);
         if (user.isPresent()) {
-            return Response.ok(user.get()).build();
+            User finalUser = new User(user.get().id(), user.get().username(), user.get().userToken(), null);
+            Optional<Group> userGroup = groupRepository.getGroupFromUser(user.get().id());
+            if (userGroup.isPresent()) {
+                finalUser = new User(user.get().id(), user.get().username(), user.get().userToken(), userGroup.get().groupToken());
+            }
+            return Response.ok(finalUser).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
@@ -66,10 +79,13 @@ public class RecipeSwiperResource {
     @POST
     @Path("/join")
     public Response joinGroup(RequestJoin requestJoin) {
-        int groupId = groupRepository.findGroupByToken(requestJoin.getGroupToken()).getId();
-        int userId = userRepository.findUserByToken(requestJoin.getUserToken()).getId();
+        GroupEntity group = groupRepository.findGroupByToken(requestJoin.getGroupToken());
+        UserEntity user = userRepository.findUserByToken(requestJoin.getUserToken());
+        if (group == null || user == null) {
+            return Response.status(Response.Status.NOT_FOUND).entity("Group not found").build();
+        }
 
-        boolean success = groupRepository.joinGroup(groupId, userId);
+        boolean success = groupRepository.joinGroup(group.getId(), user.getId());
         if (success) {
             return Response.ok("User joined the group").build();
         } else {
@@ -91,7 +107,8 @@ public class RecipeSwiperResource {
     }
 
     @GET
-    @Path("/{groupToken}/get/recipes")
+    @Path("/groups/{groupToken}/get/recipes")
+    //todo implement dynamic summary
     public Response getRecipes(@PathParam("groupToken") String groupToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
         if (recipes.isEmpty()) {

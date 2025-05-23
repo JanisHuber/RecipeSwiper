@@ -33,6 +33,17 @@ public class GroupRepository {
         return Optional.of(group);
     }
 
+    public Optional<Group> getGroupFromUser(int userId) {
+        try {
+            GroupEntity group = em.createQuery("SELECT g FROM GroupEntity g JOIN UserToGroupEntity utg ON g.id = utg.group_id WHERE utg.user_id = :userId", GroupEntity.class)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+            return Optional.of(new Group(group.getId(), group.getGroup_token()));
+        } catch (NoResultException e) {
+            return Optional.empty();
+        }
+    }
+
     @Transactional
     public boolean joinGroup(int groupId, int userId) {
         GroupEntity group = em.find(GroupEntity.class, groupId);
