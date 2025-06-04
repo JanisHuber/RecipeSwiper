@@ -57,7 +57,7 @@ CREATE TABLE recipe_votes
     user_id   INT                      NOT NULL,
     recipe_id INT                      NOT NULL,
     group_id  INT                      NOT NULL,
-    vote      ENUM ('LIKE', 'DISLIKE') NOT NULL,
+    vote      VARCHAR (10) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (recipe_id) REFERENCES recipes (id),
     FOREIGN KEY (group_id) REFERENCES `groups` (id)

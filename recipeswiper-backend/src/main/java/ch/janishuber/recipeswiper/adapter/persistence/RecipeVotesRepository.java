@@ -9,23 +9,17 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
-import java.util.List;
-
-import static java.util.Arrays.stream;
-
 @RequestScoped
 public class RecipeVotesRepository {
     @PersistenceContext(name = "jpa-unit")
     private EntityManager em;
 
-    @Transactional
     public void saveVote(int recipeId, int userId, int groupId, VoteType voteType) {
         if (hasUserAlreadyVoted(recipeId, userId)) {
             throw new IllegalStateException("User has already voted for this recipe");
         }
         RecipeVotesEntity recipeVote = new RecipeVotesEntity(recipeId, userId, groupId, voteType);
         em.persist(recipeVote);
-        em.flush();
     }
 
     @Transactional

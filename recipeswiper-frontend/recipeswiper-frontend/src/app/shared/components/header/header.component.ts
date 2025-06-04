@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../../../core/services/user-service';
+import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/dto/user';
 import { Router } from '@angular/router';
 import { Group } from '../../../core/models/dto/Group';
@@ -10,7 +10,7 @@ import { Group } from '../../../core/models/dto/Group';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrl: './header.component.css',
 })
 export class HeaderComponent implements OnInit {
   @Input() groupName: string = '';
@@ -23,9 +23,11 @@ export class HeaderComponent implements OnInit {
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit() {
-    this.userService.getCurrentUserObservable().subscribe(async (user: User | null) => {
-      this.currentUser = user;
-    });
+    this.userService
+      .getCurrentUserObservable()
+      .subscribe(async (user: User | null) => {
+        this.currentUser = user;
+      });
   }
 
   toggleMenu() {
@@ -44,4 +46,4 @@ export class HeaderComponent implements OnInit {
   navigateToProfile() {
     this.router.navigate([`/recipeswiper/user/${this.currentUser?.userToken}`]);
   }
-} 
+}

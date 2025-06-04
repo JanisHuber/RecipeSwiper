@@ -3,7 +3,6 @@ package ch.janishuber.recipeswiper.adapter.rest;
 import ch.janishuber.recipeswiper.adapter.persistence.*;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RecipeResult;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestCreateUser;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import ch.janishuber.recipeswiper.adapter.rest.dto.VoteRequest;
 import ch.janishuber.recipeswiper.domain.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -93,7 +93,7 @@ public class RecipeSwiperResource {
     @Path("/{groupToken}/load/recipes")
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
         // todo implement dynamic recipe loading
-        Optional<Recipe> recipe = recipeRepository.getRecipe(1);
+        Optional<Recipe> recipe = recipeRepository.getRecipe(3);
         if (recipe.isPresent()) {
             groupRecipesRepository.addRecipeToGroup(recipe.get().recipeId(), groupToken);
             return Response.ok("Loaded Recipes successfully").build();
@@ -120,9 +120,9 @@ public class RecipeSwiperResource {
     }
 
     @GET
-    @Path("/groups/{groupToken}/get/recipes")
-    public Response getRecipesByGroup(@PathParam("groupToken") String groupToken) {
-        List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
+    @Path("/groups/{groupToken}/{userToken}/get/recipes")
+    public Response getRecipesByGroup(@PathParam("groupToken") String groupToken, @PathParam("userToken") String userToken) {
+        List<Recipe> recipes = groupRecipesRepository.getAllRecipesForUser(groupToken, userToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
         }
@@ -130,12 +130,14 @@ public class RecipeSwiperResource {
     }
 
     @POST
-    @Path("/{groupToken}/{userToken}/vote")
-    public Response voteRecipe(@PathParam("groupToken") String groupToken, @PathParam("userToken") String userToken,
-            @QueryParam("vote") String voteType, int recipeId) {
-        VoteType vote = "DISLIKE".equalsIgnoreCase(voteType) ? VoteType.DISLIKE : VoteType.LIKE;
-        recipeVotesRepository.saveVote(recipeId, userToken, groupToken, vote);
-        return Response.ok("Recipe " + voteType.toLowerCase() + "d").build();
+    @Path("/{groupToken}/vote")
+    public Response voteRecipe(@PathParam("groupToken") String groupToken, VoteRequest voteRequest) {
+        try {
+            recipeVotesRepository.saveVote(voteRequest.recipeId(), voteRequest.userToken(), groupToken, voteRequest.voteType());
+        } catch (IllegalStateException e) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        }
+        return Response.ok("Recipe " + voteRequest.voteType().toString().toLowerCase() + "d").build();
     }
 
     @GET

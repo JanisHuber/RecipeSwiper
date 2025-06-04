@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { RecipeswiperService } from '../../core/services/recipeswiper-service';
+import { RecipeswiperService } from '../../core/services/recipeswiper.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../../core/models/Recipe';
 import { CommonModule } from '@angular/common';
 import { RecipeListComponent } from '../../features/recipe/recipe-list/recipe-list.component';
+import { VoteType } from '../../core/models/VoteType';
+import { ErrorPopupService } from '../../core/services/error-popup.service';
 
 
 @Component({
@@ -11,18 +13,22 @@ import { RecipeListComponent } from '../../features/recipe/recipe-list/recipe-li
   standalone: true,
   imports: [CommonModule, RecipeListComponent],
   templateUrl: './recipe-page.component.html',
-  styleUrl: './recipe-page.component.css'
+  styleUrl: './recipe-page.component.css',
 })
 export class RecipePageComponent implements OnInit {
-
   groupToken: string = '';
   recipes: Recipe[] = [];
   currentRecipe: Recipe | null = null;
   currentIndex: number = 0;
+  errorMessage: string = '';
 
-
-  constructor(private recipeswiperService: RecipeswiperService, private route: ActivatedRoute, private router: Router) {
-    this.route.params.subscribe(params => {
+  constructor(
+    private recipeswiperService: RecipeswiperService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private errorPopupService: ErrorPopupService
+  ) {
+    this.route.params.subscribe((params) => {
       this.groupToken = params['groupToken'];
     });
   }
@@ -39,12 +45,12 @@ export class RecipePageComponent implements OnInit {
   }
 
   getRecipes() {
-    this.recipeswiperService.getRecipes(this.groupToken).subscribe({ 
+    this.recipeswiperService.getRecipes(this.groupToken).subscribe({
       next: (recipes) => {
         this.recipes = recipes;
         this.currentIndex = 0;
         this.setCurrentRecipe();
-      }
+      },
     });
   }
 
@@ -58,15 +64,33 @@ export class RecipePageComponent implements OnInit {
 
   likeRecipe() {
     if (this.currentRecipe) {
-      console.log('Liked recipe:', this.currentRecipe.title);
-      this.nextRecipe();
+      this.recipeswiperService
+        .vote(this.groupToken, this.currentRecipe.recipeId, VoteType.LIKE)
+        .subscribe({
+          next: () => {
+            this.nextRecipe();
+          },
+          error: (error) => {
+            this.errorPopupService.showError(error.message);
+            this.nextRecipe();
+          },
+        });
     }
   }
 
   dislikeRecipe() {
     if (this.currentRecipe) {
-      console.log('Disliked recipe:', this.currentRecipe.title);
-      this.nextRecipe();
+      this.recipeswiperService
+        .vote(this.groupToken, this.currentRecipe.recipeId, VoteType.DISLIKE)
+        .subscribe({
+          next: () => {
+            this.nextRecipe();
+          },
+          error: (error) => {
+            this.errorPopupService.showError(error.message);
+            this.nextRecipe();
+          },
+        });
     }
   }
 

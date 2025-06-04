@@ -19,7 +19,8 @@ public class RecipeVotesEntity {
     @Column(name = "group_id")
     private int group_id;
 
-    @Column(name = "vote")
+    @Enumerated(EnumType.STRING)
+    @Column(name = "vote", nullable = false)
     private VoteType vote;
 
     public RecipeVotesEntity() {
