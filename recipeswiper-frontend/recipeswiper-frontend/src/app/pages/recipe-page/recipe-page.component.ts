@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { RecipeswiperService } from '../../core/services/recipeswiper-service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../../core/models/Recipe';
 import { CommonModule } from '@angular/common';
 import { RecipeListComponent } from '../../features/recipe/recipe-list/recipe-list.component';
@@ -21,7 +21,7 @@ export class RecipePageComponent implements OnInit {
   currentIndex: number = 0;
 
 
-  constructor(private recipeswiperService: RecipeswiperService, private route: ActivatedRoute) {
+  constructor(private recipeswiperService: RecipeswiperService, private route: ActivatedRoute, private router: Router) {
     this.route.params.subscribe(params => {
       this.groupToken = params['groupToken'];
     });
@@ -73,5 +73,9 @@ export class RecipePageComponent implements OnInit {
   private nextRecipe() {
     this.currentIndex++;
     this.setCurrentRecipe();
+  }
+
+  backToGroupOverview() {
+    this.router.navigate([`/recipeswiper/group/${this.groupToken}`]);
   }
 }

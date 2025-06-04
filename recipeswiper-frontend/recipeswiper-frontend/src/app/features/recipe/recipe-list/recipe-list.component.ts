@@ -1,10 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Recipe } from '../../../core/models/Recipe';
-
+import { RecipeCardComponent } from '../recipe-card/recipe-card.component';
 
 @Component({
   selector: 'app-recipe-list',
-  imports: [],
+  imports: [RecipeCardComponent],
+  standalone: true,
   templateUrl: './recipe-list.component.html',
   styleUrl: './recipe-list.component.css'
 })

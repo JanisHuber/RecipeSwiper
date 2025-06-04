@@ -44,10 +44,11 @@ public class RecipeSwiperResource {
 
     @POST
     @Path("/new/group")
-    public Response newGroup() {
+    @Consumes("text/plain")
+    public Response newGroup(String name) {
         String token = UUID.randomUUID().toString();
-        int groupId = groupRepository.save(token);
-        Group group = new Group(groupId, token);
+        int groupId = groupRepository.save(token, name);
+        Group group = new Group(groupId, token, name);
         return Response.ok(group).build();
     }
 
@@ -56,10 +57,7 @@ public class RecipeSwiperResource {
     public Response newUser(RequestCreateUser requestCreateUser) {
         String token = UUID.randomUUID().toString();
         int userId = userRepository.save(requestCreateUser.username(), token);
-
-        Optional<Group> userGroup = groupRepository.getGroupFromUser(userId);
-        User user = userGroup.map(group -> new User(userId, requestCreateUser.username(), token, group.groupToken()))
-                .orElseGet(() -> new User(userId, requestCreateUser.username(), token, null));
+        User user = new User(userId, requestCreateUser.username(), token);
         return Response.ok(user).build();
     }
 
@@ -68,12 +66,7 @@ public class RecipeSwiperResource {
     public Response getUser(@PathParam("userToken") String userToken) {
         Optional<User> user = userRepository.getUser(userToken);
         if (user.isPresent()) {
-            User finalUser = new User(user.get().id(), user.get().username(), user.get().userToken(), null);
-            Optional<Group> userGroup = groupRepository.getGroupFromUser(user.get().id());
-            if (userGroup.isPresent()) {
-                finalUser = new User(user.get().id(), user.get().username(), user.get().userToken(), userGroup.get().groupToken());
-            }
-            return Response.ok(finalUser).build();
+            return Response.ok(user.get()).build();
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
         }
@@ -157,5 +150,17 @@ public class RecipeSwiperResource {
             return Response.status(Response.Status.NOT_FOUND).entity("No groups found for user").build();
         }
         return Response.ok(groups).build();
+    }
+
+    @GET
+    @Path("/groups/{groupToken}")
+    public Response getGroup(@PathParam("groupToken") String groupToken) {
+        GroupEntity groupEntity = groupRepository.findGroupByToken(groupToken);
+        if (groupEntity != null) {
+            Group group = new Group(groupEntity.getId(), groupEntity.getGroup_token(), groupEntity.getName());
+            return Response.ok(group).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Group not found").build();
+        }
     }
 }

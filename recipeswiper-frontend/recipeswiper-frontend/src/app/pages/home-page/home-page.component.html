@@ -1,20 +1,13 @@
-<div class="min-h-screen bg-gray-100 pt-6">
-  <div class="max-w-md mx-auto space-y-6">
-    <div class="bg-white rounded-lg shadow-lg p-6">
-      <h2 class="text-2xl font-bold text-gray-800 mb-2">
-        Welcome{{ currentUser ? ', ' + currentUser.username : '' }}!
-      </h2>
-      <p class="text-gray-600">
-        Ready to discover amazing recipes? Join a group or create your own to start swiping!
-      </p>
-    </div>
-
-    <!-- User Profile Demo -->
-    <app-user-profile></app-user-profile>
-
-    <!-- Join Group Component -->
-    <app-join-group
-    [username]="currentUser?.username || ''"
-    ></app-join-group>
+<div class="max-w mx-auto space-y-6 mb-6">
+  <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 mb-2">
+      Welcome{{ currentUser ? ", " + currentUser.username : "" }}!
+    </h2>
+    <p class="text-gray-600">
+      Ready to discover amazing recipes? Join a group or create your own to
+      start swiping!
+    </p>
   </div>
+
+  <app-group-list [groups]="groups"></app-group-list>
 </div>

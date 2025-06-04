@@ -12,11 +12,15 @@ public class GroupEntity {
     @Column(name = "group_token")
     private String group_token;
 
+    @Column(name = "name")
+    private String name;
+
     public GroupEntity() {
     }
 
-    public GroupEntity(String group_token) {
+    public GroupEntity(String group_token, String name) {
         this.group_token = group_token;
+        this.name = name;
     }
 
     public int getId() {
@@ -33,5 +37,13 @@ public class GroupEntity {
 
     public void setGroup_token(String group_token) {
         this.group_token = group_token;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

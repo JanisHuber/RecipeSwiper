@@ -1,27 +1,39 @@
 import { Component, OnInit } from '@angular/core';
-import { JoinGroupComponent } from '../../features/group/join-group/join-group.component';
-import { HeaderComponent } from '../../shared/components/header/header.component';
-import { UserProfileComponent } from '../../features/user/user-profile/user-profile.component';
 import { UserService } from '../../core/services/user-service';
 import { User } from '../../core/models/dto/user';
+import { Group } from '../../core/models/dto/Group';
+import { RecipeswiperService } from '../../core/services/recipeswiper-service';
+import { GroupListComponent } from '../../features/group/group-list/group-list.component';
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [JoinGroupComponent, UserProfileComponent],
+  imports: [GroupListComponent],
   templateUrl: './home-page.component.html',
-  styleUrl: './home-page.component.css'
+  styleUrl: './home-page.component.css',
 })
 export class HomePageComponent implements OnInit {
   public currentUser: User | null = null;
   public username: string = '';
+  public groups: Group[] = [];
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private recipeswiperService: RecipeswiperService
+  ) {}
 
   ngOnInit() {
-    this.userService.getCurrentUserObservable().subscribe((user: User | null) => {
-      this.currentUser = user;
-      this.username = user?.username || '';
-    });
+    this.userService
+      .getCurrentUserObservable()
+      .subscribe((user: User | null) => {
+        this.currentUser = user;
+        this.username = user?.username || '';
+      });
+
+    this.recipeswiperService
+      .getGroups(this.currentUser?.userToken || '')
+      .subscribe((groups: Group[]) => {
+        this.groups = groups;
+      });
   }
 }

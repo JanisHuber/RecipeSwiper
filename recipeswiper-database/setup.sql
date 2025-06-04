@@ -12,7 +12,8 @@ DROP TABLE IF EXISTS `groups`;
 CREATE TABLE `groups`
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    group_token VARCHAR(255) NOT NULL UNIQUE
+    group_token VARCHAR(255) NOT NULL UNIQUE,
+    name        VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE users

@@ -1,7 +1,7 @@
 import { User } from "../models/dto/user";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { Observable, tap } from "rxjs";
+import { catchError, Observable, of, tap, throwError } from "rxjs";
 import { UserService } from "./user-service";
 import { RequestCreateUser } from "../models/dto/RequestCreateUser";
 import { RequestJoin } from "../models/dto/RequestJoin";
@@ -40,7 +40,7 @@ export class RecipeswiperService {
     }
 
     joinGroup(groupToken: string): void {
-        const userToken: string = localStorage.getItem('userToken') || '';
+        const userToken: string = this.userService.getUserToken() || '';
         if (userToken === '') {
             return;
         }
@@ -50,19 +50,19 @@ export class RecipeswiperService {
         });
     }
 
-    createGroup(): void {
-        const userToken: string = localStorage.getItem('userToken') || '';
+    createGroup(name: string): void {
+        const userToken: string = this.userService.getUserToken() || '';
         if (userToken === '') {
             throw new Error('User token not found');
         }
-        this.http.post<Group>(`${this.apiUrl}/new/group`, this.httpOptions).subscribe(response => {
+        this.http.post<Group>(`${this.apiUrl}/new/group`, name, { headers: new HttpHeaders({ 'Content-Type': 'text/plain' }) }).subscribe(response => {
             const group: Group = response;
             this.joinGroup(group.groupToken);
         });
     }
 
     loadRecipes(groupToken: string): void {
-        const userToken: string = localStorage.getItem('userToken') || '';
+        const userToken: string = this.userService.getUserToken() || '';
         if (userToken === '') {
             throw new Error('User token not found');
         }
@@ -72,11 +72,18 @@ export class RecipeswiperService {
     }
 
     getRecipes(groupToken: string): Observable<Recipe[]> {
-        return this.http.get<Recipe[]>(`${this.apiUrl}/groups/${groupToken}/get/recipes`);
+        return this.http.get<Recipe[]>(`${this.apiUrl}/groups/${groupToken}/get/recipes`).pipe(
+            catchError(error => {
+                if (error.status === 404) {
+                    return of([]);
+                }
+                return throwError(() => error);
+            })
+        );
     }
 
     vote(groupToken: string, recipeId: number, voteType: VoteType): Observable<string> {
-        const userToken: string = localStorage.getItem('userToken') || '';
+        const userToken: string = this.userService.getUserToken() || '';
         if (userToken === '') {
             throw new Error('User token not found');
         }
@@ -93,14 +100,35 @@ export class RecipeswiperService {
     }
 
     getResultRecipes(groupToken: string): Observable<RecipeResult[]> {
-        return this.http.get<RecipeResult[]>(`${this.apiUrl}/${groupToken}/get/result`);
+        return this.http.get<RecipeResult[]>(`${this.apiUrl}/${groupToken}/get/result`).pipe(
+            catchError(error => {
+                if (error.status === 404) {
+                    return of([]);
+                }
+                return throwError(() => error);
+            })
+        );
     }
 
-    getGroups(): Observable<Group[]> {
-        const userToken: string | null = localStorage.getItem('userToken');
+    getGroups(userToken: string): Observable<Group[]> { //todo: add error handling
         if (!userToken) {
             throw new Error('User token not found');
         }
-        return this.http.get<Group[]>(`${this.apiUrl}/${userToken}/get/groups`);
+        return this.http.get<Group[]>(`${this.apiUrl}/${userToken}/get/groups`).pipe(
+            catchError(error => {
+                if (error.status === 404) {
+                    return of([]);
+                }
+                return throwError(() => error);
+            })
+        );
+    }
+
+    getGroupName(groupToken: string): Observable<Group> {
+        return this.http.get<Group>(`${this.apiUrl}/groups/${groupToken}`).pipe(
+            catchError(error => {
+                return throwError(() => error);
+            })
+        );
     }
 }

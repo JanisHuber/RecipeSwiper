@@ -11,8 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrl: './join-group.component.css'
 })
 export class JoinGroupComponent {
-  @Input() username: string = '';
-  public groupCode: string = '';
+  groupCode: string = '';
 
   constructor(private recipeswiperService: RecipeswiperService) {}
 
@@ -20,9 +19,5 @@ export class JoinGroupComponent {
     if (!this.groupCode) return;
     
     this.recipeswiperService.joinGroup(this.groupCode);
-  }
-
-  createGroup() {
-    this.recipeswiperService.createGroup();
   }
 }

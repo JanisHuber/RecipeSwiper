@@ -11,7 +11,6 @@ export class AuthGuard implements CanActivate {
 
   canActivate(): boolean {
     if (!this.userService.isLoggedIn()) {
-      this.router.navigate(['/recipeswiper/create-user']);
       return false;
     }
     

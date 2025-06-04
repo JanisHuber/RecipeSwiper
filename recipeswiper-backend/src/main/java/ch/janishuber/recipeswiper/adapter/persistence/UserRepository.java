@@ -27,7 +27,7 @@ public class UserRepository {
         if (entity == null) {
             return Optional.empty();
         }
-        User user = new User(entity.getId(), entity.getUsername(), entity.getUser_token(), null);
+        User user = new User(entity.getId(), entity.getUsername(), entity.getUser_token());
         return Optional.of(user);
     }
 

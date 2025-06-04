@@ -26,8 +26,7 @@ Das Frontend wurde komplett neu gestaltet mit:
 1. **Home Page** (`/recipeswiper/home`) - Gruppe beitreten oder erstellen
 2. **Recipe Page** (`/recipeswiper/recipe/:groupToken`) - Rezepte swipen
 3. **Group Page** (`/recipeswiper/group/:groupToken`) - Gruppenergebnisse anzeigen
-4. **User Page** (`/recipeswiper/user/:userToken`) - Benutzerprofil
-5. **Create User Page** (`/recipeswiper/create-user`) - Neuen Benutzer erstellen
+4. **User Page** (`/recipeswiper/user/:userToken`) - Benutzerprofil & Neuen Nutzer erstellen
 
 ## 🛠️ Installation
 

@@ -19,14 +19,11 @@ export const appConfig: ApplicationConfig = {
         if (token) {
           recipeswiperService.getUser(token).subscribe(async user => {
             await userService.setUser(user);
-            if (user.groupToken) {
-              router.navigate([`/recipeswiper/recipe/${user.groupToken}`]);
-            } else if (user.userToken) {
-              router.navigate([`/recipeswiper/user/${user.userToken}`]);
-            }
+            router.navigate([`/recipeswiper/home`]);
             resolve();
           });
         } else {
+          router.navigate([`/recipeswiper/user`]);  
           resolve();
         }
       });

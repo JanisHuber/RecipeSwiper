@@ -4,7 +4,6 @@ import { UserService } from '../../../core/services/user-service';
 import { User } from '../../../core/models/dto/user';
 import { Router } from '@angular/router';
 import { Group } from '../../../core/models/dto/Group';
-import { RecipeswiperService } from '../../../core/services/recipeswiper-service';
 
 @Component({
   selector: 'app-header',
@@ -26,7 +25,6 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.userService.getCurrentUserObservable().subscribe(async (user: User | null) => {
       this.currentUser = user;
-      
     });
   }
 

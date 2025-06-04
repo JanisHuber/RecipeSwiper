@@ -19,8 +19,8 @@ public class GroupRepository {
     private EntityManager em;
 
     @Transactional
-    public int save(String token) {
-        GroupEntity groupEntity = new GroupEntity(token);
+    public int save(String token, String name) {
+        GroupEntity groupEntity = new GroupEntity(token, name);
         em.persist(groupEntity);
         em.flush();
         return groupEntity.getId();
@@ -31,19 +31,8 @@ public class GroupRepository {
         if (entity == null) {
             return Optional.empty();
         }
-        Group group = new Group(groupId, entity.getGroup_token());
+        Group group = new Group(groupId, entity.getGroup_token(), entity.getName());
         return Optional.of(group);
-    }
-
-    public Optional<Group> getGroupFromUser(int userId) {
-        try {
-            GroupEntity group = em.createQuery("SELECT g FROM GroupEntity g JOIN UserToGroupEntity utg ON g.id = utg.group_id WHERE utg.user_id = :userId", GroupEntity.class)
-                    .setParameter("userId", userId)
-                    .getSingleResult();
-            return Optional.of(new Group(group.getId(), group.getGroup_token()));
-        } catch (NoResultException e) {
-            return Optional.empty();
-        }
     }
 
     @Transactional
@@ -79,7 +68,7 @@ public class GroupRepository {
                 .setParameter("userId", userId)
                 .getResultList()
                 .stream()
-                .map(g -> new Group(g.getId(), g.getGroup_token()))
+                .map(g -> new Group(g.getId(), g.getGroup_token(), g.getName()))
                 .toList();
     }
 

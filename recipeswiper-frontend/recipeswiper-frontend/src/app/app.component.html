@@ -1,7 +1,11 @@
 <app-header
-  [groupName]="'Huber\'s'"
+  [groupName]="showGroup ? groupName : 'Recipeswiper'"
   [showUserIcon]="true"
   [groups]="groups"
 ></app-header>
 
-<router-outlet></router-outlet>
+<div class="bg-gray-100">
+  <div class="max-w-[800px] mx-auto px-4 py-4">
+    <router-outlet></router-outlet>
+  </div>
+</div>
