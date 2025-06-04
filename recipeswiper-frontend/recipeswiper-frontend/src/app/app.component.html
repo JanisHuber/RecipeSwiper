@@ -1,10 +1,7 @@
-@if(username) {
-<nav>
-    <h1>Welcome {{username}}</h1>
-    <button (click)="logout()">Logout</button>
-</nav>
-}
+<app-header
+  [groupName]="'Huber\'s'"
+  [showUserIcon]="true"
+  [groups]="groups"
+></app-header>
 
-<div class="container">
-    <router-outlet />
-</div>
+<router-outlet></router-outlet>

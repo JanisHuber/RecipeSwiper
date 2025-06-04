@@ -15,16 +15,12 @@ public class GroupRecipesEntity {
     @Column(name = "group_id")
     private int group_id;
 
-    @Column(name = "likes")
-    private int likes;
-
     public GroupRecipesEntity() {
     }
 
-    public GroupRecipesEntity(int recipe_id, int group_id, int likes) {
+    public GroupRecipesEntity(int recipe_id, int group_id) {
         this.recipe_id = recipe_id;
         this.group_id = group_id;
-        this.likes = likes;
     }
 
     public int getId() {
@@ -49,13 +45,5 @@ public class GroupRecipesEntity {
 
     public void setGroup_id(int group_id) {
         this.group_id = group_id;
-    }
-
-    public int getLikes() {
-        return likes;
-    }
-
-    public void setLikes(int likes) {
-        this.likes = likes;
     }
 }

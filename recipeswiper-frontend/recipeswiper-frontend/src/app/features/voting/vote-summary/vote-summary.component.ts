@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { RecipeResult } from '../../../core/models/RecipeResult';
 
 @Component({
   selector: 'app-vote-summary',
@@ -7,5 +8,5 @@ import { Component } from '@angular/core';
   styleUrl: './vote-summary.component.css'
 })
 export class VoteSummaryComponent {
-
+  @Input() resultRecipes: RecipeResult[] = [];
 }

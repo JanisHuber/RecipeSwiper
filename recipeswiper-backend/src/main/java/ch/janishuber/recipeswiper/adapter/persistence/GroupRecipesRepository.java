@@ -18,7 +18,7 @@ public class GroupRecipesRepository {
 
     @Transactional
     public void addRecipeToGroup(int recipeId, int groupId) {
-        GroupRecipesEntity groupRecipe = new GroupRecipesEntity(recipeId, groupId, 0);
+        GroupRecipesEntity groupRecipe = new GroupRecipesEntity(recipeId, groupId);
         em.persist(groupRecipe);
         em.flush();
     }
@@ -50,20 +50,6 @@ public class GroupRecipesRepository {
 
     public List<Recipe> getAllRecipes(String groupToken) {
         return getAllRecipes(convertTokenToGroupId(groupToken));
-    }
-
-    @Transactional
-    public void likeRecipe(int recipeId, int groupId) {
-        GroupRecipesEntity groupRecipe = em.find(GroupRecipesEntity.class, recipeId);
-        if (groupRecipe != null && groupRecipe.getGroup_id() == groupId) {
-            groupRecipe.setLikes(groupRecipe.getLikes() + 1);
-            em.merge(groupRecipe);
-        }
-    }
-
-    @Transactional
-    public void likeRecipe(int recipeId, String groupToken) {
-        likeRecipe(recipeId, convertTokenToGroupId(groupToken));
     }
 
     private int convertTokenToGroupId(String groupToken) {

@@ -1,49 +1,24 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { UserService } from './core/services/user-service';
+import { HeaderComponent } from './shared/components/header/header.component';
+import { Group } from './core/models/dto/Group';
 import { RecipeswiperService } from './core/services/recipeswiper-service';
-import { Router } from '@angular/router';
-import { User } from './core/models/dto/user';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [RouterOutlet, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'recipeswiper-frontend';
 
-  public username: string = '';
+  groups: Group[] = [];
 
-  constructor(
-    private userService: UserService,
-    private recipeswiperService: RecipeswiperService,
-    private router: Router
-  ) {
-    this.initializeApp();
-  }
+  constructor(private recipeswiperService: RecipeswiperService) {}
 
-  private async initializeApp(): Promise<void> {
-    await this.userService.loadUserState();
-    
-    this.userService.getUserTokenObservable().subscribe(token => {
-      if (token) {
-        this.recipeswiperService.getUser(token).subscribe(user => {
-          this.username = user.username;
-          if (user.groupToken) {
-            this.router.navigate([`/recipeswiper/recipe/${user.groupToken}`]);
-          } else {
-            this.router.navigate(['/recipeswiper/home']);
-          }
-        });
-      }
-    });
-  }
-
-  logout() {
-    this.userService.clearUserToken();
-    this.username = '';
-    this.router.navigate(['/recipeswiper/create-user']);
+  ngOnInit() {
+    this.recipeswiperService.getGroups().subscribe(groups => this.groups = groups);
   }
 }

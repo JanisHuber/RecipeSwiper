@@ -9,6 +9,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
+import java.util.List;
 import java.util.Optional;
 
 @RequestScoped
@@ -66,6 +68,19 @@ public class GroupRepository {
         } catch (NoResultException e) {
             return null;
         }
+    }
+
+    public List<Group> getAllGroupsForUser(int userId) {
+        return em.createQuery("""
+                SELECT g FROM GroupEntity g
+                JOIN UserToGroupEntity utg ON g.id = utg.group_id
+                WHERE utg.user_id = :userId
+                """, GroupEntity.class)
+                .setParameter("userId", userId)
+                .getResultList()
+                .stream()
+                .map(g -> new Group(g.getId(), g.getGroup_token()))
+                .toList();
     }
 
     private boolean isUserAlreadyInGroup(int userId, int groupId) {

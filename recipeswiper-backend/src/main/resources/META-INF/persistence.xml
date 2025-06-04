@@ -9,6 +9,9 @@
         <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity</class>
         <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity</class>
         <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.UserToGroupEntity</class>
+        <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.RecipeEntity</class>
+        <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupRecipesEntity</class>
+        <class>ch.janishuber.recipeswiper.adapter.persistence.Entity.RecipeVotesEntity</class>
         <properties>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>

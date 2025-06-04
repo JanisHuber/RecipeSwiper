@@ -1,10 +1,20 @@
-<div class="home-container">
-    <input 
-        type="text" 
-        placeholder="Code..." 
-        [(ngModel)]="groupCode"
-    >
-    <button (click)="joinGroup()">Join a group</button>
+<div class="min-h-screen bg-gray-100 pt-6">
+  <div class="max-w-md mx-auto space-y-6">
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <h2 class="text-2xl font-bold text-gray-800 mb-2">
+        Welcome{{ currentUser ? ', ' + currentUser.username : '' }}!
+      </h2>
+      <p class="text-gray-600">
+        Ready to discover amazing recipes? Join a group or create your own to start swiping!
+      </p>
+    </div>
 
-    <button (click)="createGroup()">Create a group</button>
+    <!-- User Profile Demo -->
+    <app-user-profile></app-user-profile>
+
+    <!-- Join Group Component -->
+    <app-join-group
+    [username]="currentUser?.username || ''"
+    ></app-join-group>
+  </div>
 </div>

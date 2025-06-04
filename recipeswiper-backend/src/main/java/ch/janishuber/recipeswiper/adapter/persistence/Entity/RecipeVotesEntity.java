@@ -25,8 +25,9 @@ public class RecipeVotesEntity {
     public RecipeVotesEntity() {
     }
 
-    public RecipeVotesEntity(int recipe_id, int group_id, VoteType vote) {
+    public RecipeVotesEntity(int recipe_id, int user_id, int group_id, VoteType vote) {
         this.recipe_id = recipe_id;
+        this.user_id = user_id;
         this.group_id = group_id;
         this.vote = vote;
     }

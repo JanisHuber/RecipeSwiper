@@ -1,1 +1,35 @@
-<p>join-group works!</p>
+<div class="min-h-screen bg-gray-100">
+    <div class="container mx-auto px-6 py-8">
+      <div class="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8">
+        <div class="text-center mb-8">
+          <h2 class="text-2xl font-bold text-gray-800 mb-2">Welcome {{ username }}</h2>
+          <p class="text-gray-600">Join an existing group or create a new one</p>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <input 
+              type="text" 
+              placeholder="Code..." 
+              [(ngModel)]="groupCode"
+              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
+          </div>
+          
+          <!-- Join Group Button -->
+          <button 
+            (click)="joinGroup()"
+            [disabled]="!groupCode"
+            class="w-full bg-gray-500 hover:bg-gray-600 disabled:bg-gray-300 disabled:cursor-not-allowed text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+            Join a group
+          </button>
+          
+          <button 
+            (click)="createGroup()"
+            class="w-full bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors">
+            Create a group
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Recipe } from '../../../core/models/Recipe';
+
 
 @Component({
   selector: 'app-recipe-list',
@@ -7,5 +9,19 @@ import { Component } from '@angular/core';
   styleUrl: './recipe-list.component.css'
 })
 export class RecipeListComponent {
+  @Input() recipes: Recipe[] = [];
+  @Input() currentRecipe: Recipe | null = null;
+  @Input() currentIndex: number = 0;
+  @Input() groupToken: string = '';
+  
+  @Output() like = new EventEmitter<void>();
+  @Output() dislike = new EventEmitter<void>();
 
+  onLike() {
+    this.like.emit();
+  }
+
+  onDislike() {
+    this.dislike.emit();
+  }
 }

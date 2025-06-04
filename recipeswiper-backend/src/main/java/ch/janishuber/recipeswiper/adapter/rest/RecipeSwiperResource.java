@@ -1,19 +1,19 @@
 package ch.janishuber.recipeswiper.adapter.rest;
 
+import ch.janishuber.recipeswiper.adapter.persistence.*;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.GroupRecipesRepository;
-import ch.janishuber.recipeswiper.adapter.persistence.GroupRepository;
-import ch.janishuber.recipeswiper.adapter.persistence.RecipeRepository;
-import ch.janishuber.recipeswiper.adapter.persistence.UserRepository;
+import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
+import ch.janishuber.recipeswiper.adapter.rest.dto.RecipeResult;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestCreateUser;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-import ch.janishuber.recipeswiper.domain.User;
-import ch.janishuber.recipeswiper.domain.Group;
-import ch.janishuber.recipeswiper.domain.Recipe;
+
+import ch.janishuber.recipeswiper.domain.*;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -32,6 +32,8 @@ public class RecipeSwiperResource {
     private UserRepository userRepository;
     @Inject
     private GroupRecipesRepository groupRecipesRepository;
+    @Inject
+    private RecipeVotesRepository recipeVotesRepository;
 
     @POST
     @Path("/new/recipe")
@@ -56,7 +58,8 @@ public class RecipeSwiperResource {
         int userId = userRepository.save(requestCreateUser.username(), token);
 
         Optional<Group> userGroup = groupRepository.getGroupFromUser(userId);
-        User user = userGroup.map(group -> new User(userId, requestCreateUser.username(), token, group.groupToken())).orElseGet(() -> new User(userId, requestCreateUser.username(), token, null));
+        User user = userGroup.map(group -> new User(userId, requestCreateUser.username(), token, group.groupToken()))
+                .orElseGet(() -> new User(userId, requestCreateUser.username(), token, null));
         return Response.ok(user).build();
     }
 
@@ -96,7 +99,7 @@ public class RecipeSwiperResource {
     @GET
     @Path("/{groupToken}/load/recipes")
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
-        //todo implement dynamic recipe loading
+        // todo implement dynamic recipe loading
         Optional<Recipe> recipe = recipeRepository.getRecipe(1);
         if (recipe.isPresent()) {
             groupRecipesRepository.addRecipeToGroup(recipe.get().recipeId(), groupToken);
@@ -107,9 +110,25 @@ public class RecipeSwiperResource {
     }
 
     @GET
-    @Path("/groups/{groupToken}/get/recipes")
-    //todo implement dynamic summary
+    @Path("/groups/{groupToken}/get/results")
+    // todo implement dynamic summary
     public Response getRecipes(@PathParam("groupToken") String groupToken) {
+        List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
+        if (recipes.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
+        }
+        List<RecipeResult> results = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            VoteResult voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
+            RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
+            results.add(recipeResult);
+        }
+        return Response.ok(results).build();
+    }
+
+    @GET
+    @Path("/groups/{groupToken}/get/recipes")
+    public Response getRecipesByGroup(@PathParam("groupToken") String groupToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
@@ -118,9 +137,25 @@ public class RecipeSwiperResource {
     }
 
     @POST
-    @Path("/{groupToken}/like")
-    public Response likeRecipe(@PathParam("groupToken") String groupToken, int recipeId) {
-        groupRecipesRepository.likeRecipe(recipeId, groupToken);
-        return Response.ok("Recipe liked").build();
+    @Path("/{groupToken}/{userToken}/vote")
+    public Response voteRecipe(@PathParam("groupToken") String groupToken, @PathParam("userToken") String userToken,
+            @QueryParam("vote") String voteType, int recipeId) {
+        VoteType vote = "DISLIKE".equalsIgnoreCase(voteType) ? VoteType.DISLIKE : VoteType.LIKE;
+        recipeVotesRepository.saveVote(recipeId, userToken, groupToken, vote);
+        return Response.ok("Recipe " + voteType.toLowerCase() + "d").build();
+    }
+
+    @GET
+    @Path("/{userToken}/get/groups")
+    public Response getGroups(@PathParam("userToken") String userToken) {
+        Optional<User> user = userRepository.getUser(userToken);
+        if (user.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("User not found").build();
+        }
+        List<Group> groups = groupRepository.getAllGroupsForUser(user.get().id());
+        if (groups.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("No groups found for user").build();
+        }
+        return Response.ok(groups).build();
     }
 }

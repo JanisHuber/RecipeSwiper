@@ -1,9 +1,8 @@
-import { Component, resolveForwardRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { RecipeswiperService } from '../../core/services/recipeswiper-service';
 import { User } from '../../core/models/dto/user';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
 
 @Component({
   selector: 'app-create-user-page',
@@ -15,14 +14,24 @@ import { FormsModule } from '@angular/forms';
 export class CreateUserPageComponent {
   
   public username: string = '';
+  public isLoading: boolean = false;
+  public errorMessage: string = '';
 
   constructor(private recipeswiperService: RecipeswiperService) {}
   
   createUser() {
-    if (this.username) {
-      this.recipeswiperService.createUser(this.username).subscribe(response => {
-        const user: User = response as User;
-        console.log(user);
+    if (this.username.trim()) {
+      this.isLoading = true;
+      this.errorMessage = '';
+      
+      this.recipeswiperService.createUser(this.username.trim()).subscribe({
+        next: (user: User) => {
+          this.isLoading = false;
+        },
+        error: (error) => {
+          this.errorMessage = 'Error creating user. Please try again.';
+          this.isLoading = false;
+        }
       });
     }
   }

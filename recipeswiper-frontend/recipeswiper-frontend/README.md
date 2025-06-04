@@ -1,59 +1,94 @@
-# RecipeswiperFrontend
+# RecipeSwiper Frontend
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.6.
+Eine moderne Angular-Anwendung für das Swipen und Teilen von Rezepten mit Freunden.
 
-## Development server
+## 🚀 Features
 
-To start a local development server, run:
+- **Modernes UI Design** mit Tailwind CSS
+- **Responsive Design** für alle Geräte
+- **Recipe Swiping** - Like oder Dislike Rezepte
+- **Gruppen-Funktionalität** - Erstelle oder trete Gruppen bei
+- **Ergebnisse anzeigen** - Sehe welche Rezepte von der Gruppe gemocht wurden
+- **Benutzer-Management** - Erstelle und verwalte Benutzerprofile
 
-```bash
-ng serve
-```
+## 🎨 Design
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Das Frontend wurde komplett neu gestaltet mit:
 
-## Code scaffolding
+- Dunkler Header mit Benutzer-Icon
+- Moderne Karten-basierte UI
+- Schöne Buttons und Eingabefelder
+- Responsive Layout
+- Smooth Transitions und Hover-Effekte
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## 📱 Seiten
 
-```bash
-ng generate component component-name
-```
+1. **Home Page** (`/recipeswiper/home`) - Gruppe beitreten oder erstellen
+2. **Recipe Page** (`/recipeswiper/recipe/:groupToken`) - Rezepte swipen
+3. **Group Page** (`/recipeswiper/group/:groupToken`) - Gruppenergebnisse anzeigen
+4. **User Page** (`/recipeswiper/user/:userToken`) - Benutzerprofil
+5. **Create User Page** (`/recipeswiper/create-user`) - Neuen Benutzer erstellen
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## 🛠️ Installation
 
 ```bash
-ng test
+# Dependencies installieren
+npm install
+
+# Development Server starten
+npm start
+
+# Build für Production
+npm run build
 ```
 
-## Running end-to-end tests
+## 🎯 Verwendung
 
-For end-to-end (e2e) testing, run:
+1. Starte die Anwendung mit `npm start`
+2. Navigiere zu `http://localhost:4200`
+3. Erstelle einen neuen Benutzer oder verwende einen bestehenden
+4. Erstelle eine neue Gruppe oder trete einer bestehenden bei
+5. Swipe durch Rezepte (Like/Dislike)
+6. Schaue dir die Gruppenergebnisse an
 
-```bash
-ng e2e
+## 🔧 Technologien
+
+- **Angular 19** - Frontend Framework
+- **Tailwind CSS** - Styling
+- **TypeScript** - Programmiersprache
+- **RxJS** - Reactive Programming
+
+## 📦 Projektstruktur
+
+```
+src/app/
+├── core/
+│   ├── models/          # Datenmodelle
+│   └── services/        # Services für API-Calls
+├── pages/               # Haupt-Seiten
+│   ├── home-page/
+│   ├── recipe-page/
+│   ├── group-page/
+│   ├── user-page/
+│   └── create-user-page/
+└── shared/
+    └── components/      # Wiederverwendbare Komponenten
+        └── header/
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+## 🎨 Design System
 
-## Additional Resources
+Das Design verwendet ein konsistentes Farbschema:
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- **Primary**: Grau-Töne für Header und Buttons
+- **Secondary**: Blau für Akzente
+- **Success**: Grün für Like-Buttons
+- **Danger**: Rot für Dislike-Buttons
+
+## 🔗 API Integration
+
+Die Anwendung ist vorbereitet für die Integration mit dem Backend:
+
+- Base URL: `http://localhost:9090/api/recipeswiper`
+- Alle Services sind implementiert
+- Mock-Daten für Entwicklung verfügbar

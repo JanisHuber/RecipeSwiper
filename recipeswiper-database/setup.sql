@@ -3,11 +3,11 @@ USE recipeswiper;
 DROP TABLE IF EXISTS recipesToGroup;
 DROP TABLE IF EXISTS selectedRecipes;
 DROP TABLE IF EXISTS userToGroup;
+DROP TABLE IF EXISTS recipe_votes;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS group_recipes;
 DROP TABLE IF EXISTS recipes;
 DROP TABLE IF EXISTS `groups`;
-DROP TABLE IF EXISTS recipe_votes;
 
 CREATE TABLE `groups`
 (

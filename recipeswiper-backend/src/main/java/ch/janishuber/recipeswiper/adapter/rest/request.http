@@ -12,7 +12,7 @@ POST http://localhost:9090/api/recipeswiper/new/user
 Content-Type: application/json
 
 {
-  "username": "Chiara"
+  "username": "Janis"
 }
 
 ###
@@ -27,7 +27,7 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:9090/api/recipeswiper/3247f304-b9c7-4e3d-b518-c2c9ed07238f/load/recipes
+GET http://localhost:9090/api/recipeswiper/cb70bd38-545d-458f-878f-55b38f8ede6b/load/recipes
 Content-Type: application/json
 
 ###

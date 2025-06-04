@@ -1,5 +1,5 @@
 import { User } from "../models/dto/user";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable, tap } from "rxjs";
 import { UserService } from "./user-service";
@@ -8,8 +8,8 @@ import { RequestJoin } from "../models/dto/RequestJoin";
 import { Group } from "../models/dto/Group";
 import { Router } from "@angular/router";
 import { Recipe } from "../models/Recipe";
-
-
+import { VoteType } from "../models/VoteType";
+import { RecipeResult } from "../models/RecipeResult";
 
 @Injectable({providedIn: 'root'})
 export class RecipeswiperService {
@@ -28,42 +28,41 @@ export class RecipeswiperService {
         return this.http.post<User>(`${this.apiUrl}/new/user`, request, 
             this.httpOptions
         ).pipe(
-            tap(user => this.userService.saveToken(user.userToken))
+            tap(async user => {
+                await this.userService.setUser(user);
+                this.router.navigate(['/recipeswiper/home']);
+            })
         );
     }
 
     getUser(userToken: string): Observable<User> {
-        return this.http.get<User>(
-            `${this.apiUrl}/${userToken}/user`,
-            this.httpOptions
-        );
+        return this.http.get<User>(`${this.apiUrl}/${userToken}/user`, this.httpOptions);
     }
 
     joinGroup(groupToken: string): void {
-        const userToken: string = this.userService.getUserToken() || '';
+        const userToken: string = localStorage.getItem('userToken') || '';
         if (userToken === '') {
             return;
         }
         const request: RequestJoin = { groupToken: groupToken, userToken: userToken };
         this.http.post(`${this.apiUrl}/join`, request, { ...this.httpOptions, responseType: 'text' }).subscribe(response => {
-            console.log(response);
+            this.router.navigate([`/recipeswiper/recipe/${groupToken}`]);
         });
     }
 
     createGroup(): void {
-        const userToken: string = this.userService.getUserToken() || '';
+        const userToken: string = localStorage.getItem('userToken') || '';
         if (userToken === '') {
             throw new Error('User token not found');
         }
         this.http.post<Group>(`${this.apiUrl}/new/group`, this.httpOptions).subscribe(response => {
             const group: Group = response;
             this.joinGroup(group.groupToken);
-            this.router.navigate([`/recipeswiper/recipe/${group.groupToken}`]);
         });
     }
 
     loadRecipes(groupToken: string): void {
-        const userToken: string = this.userService.getUserToken() || '';
+        const userToken: string = localStorage.getItem('userToken') || '';
         if (userToken === '') {
             throw new Error('User token not found');
         }
@@ -74,5 +73,34 @@ export class RecipeswiperService {
 
     getRecipes(groupToken: string): Observable<Recipe[]> {
         return this.http.get<Recipe[]>(`${this.apiUrl}/groups/${groupToken}/get/recipes`);
+    }
+
+    vote(groupToken: string, recipeId: number, voteType: VoteType): Observable<string> {
+        const userToken: string = localStorage.getItem('userToken') || '';
+        if (userToken === '') {
+            throw new Error('User token not found');
+        }
+        if (recipeId === undefined) {
+            throw new Error('Recipe ID not found');
+        }
+        if (groupToken === '') {
+            throw new Error('Group token not found');
+        }
+
+        const params = new HttpParams().set('vote', voteType);
+        
+        return this.http.post<string>(`${this.apiUrl}/${groupToken}/${userToken}/vote`, { recipeId }, { ...this.httpOptions, params: params, responseType: 'text' as 'json' });
+    }
+
+    getResultRecipes(groupToken: string): Observable<RecipeResult[]> {
+        return this.http.get<RecipeResult[]>(`${this.apiUrl}/${groupToken}/get/result`);
+    }
+
+    getGroups(): Observable<Group[]> {
+        const userToken: string | null = localStorage.getItem('userToken');
+        if (!userToken) {
+            throw new Error('User token not found');
+        }
+        return this.http.get<Group[]>(`${this.apiUrl}/${userToken}/get/groups`);
     }
 }
