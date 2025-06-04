@@ -93,13 +93,15 @@ public class RecipeSwiperResource {
     @Path("/{groupToken}/load/recipes")
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
         // todo implement dynamic recipe loading
-        Optional<Recipe> recipe = recipeRepository.getRecipe(3);
-        if (recipe.isPresent()) {
-            groupRecipesRepository.addRecipeToGroup(recipe.get().recipeId(), groupToken);
-            return Response.ok("Loaded Recipes successfully").build();
-        } else {
-            return Response.status(Response.Status.NOT_FOUND).entity("No Recipe found").build();
+        for (int i = 1; i <= 5; i++) {
+            Optional<Recipe> recipe = recipeRepository.getRecipe(i);
+            if (recipe.isPresent()) {
+                groupRecipesRepository.addRecipeToGroup(recipe.get().recipeId(), groupToken);
+            } else {
+                return Response.status(Response.Status.NOT_FOUND).entity("No Recipe found for ID: " + i).build();
+            }
         }
+        return Response.ok("Recipes loaded into group").build();
     }
 
     @GET
@@ -123,6 +125,16 @@ public class RecipeSwiperResource {
     @Path("/groups/{groupToken}/{userToken}/get/recipes")
     public Response getRecipesByGroup(@PathParam("groupToken") String groupToken, @PathParam("userToken") String userToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipesForUser(groupToken, userToken);
+        if (recipes.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
+        }
+        return Response.ok(recipes).build();
+    }
+
+    @GET
+    @Path("/get/recipes")
+    public Response getAllRecipes() {
+        List<Recipe> recipes = recipeRepository.getAllRecipes();
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
         }

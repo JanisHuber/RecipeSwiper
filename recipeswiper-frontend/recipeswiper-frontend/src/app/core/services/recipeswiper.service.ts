@@ -94,13 +94,26 @@ export class RecipeswiperService {
       });
   }
 
-  getRecipes(groupToken: string): Observable<Recipe[]> {
+  getRecipesForUser(groupToken: string): Observable<Recipe[]> {
     const userToken: string = this.userService.getUserToken() || '';
     if (userToken === '') {
       throw new Error('User token not found');
     }
     return this.http
       .get<Recipe[]>(`${this.apiUrl}/groups/${groupToken}/${userToken}/get/recipes`)
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return of([]);
+          }
+          return throwError(() => error);
+        })
+      );
+  }
+
+  getAllRecipes(): Observable<Recipe[]> {
+    return this.http
+      .get<Recipe[]>(`${this.apiUrl}/get/recipes`)
       .pipe(
         catchError((error) => {
           if (error.status === 404) {

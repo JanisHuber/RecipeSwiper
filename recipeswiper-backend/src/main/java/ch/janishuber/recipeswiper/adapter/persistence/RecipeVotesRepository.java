@@ -15,7 +15,7 @@ public class RecipeVotesRepository {
     private EntityManager em;
 
     public void saveVote(int recipeId, int userId, int groupId, VoteType voteType) {
-        if (hasUserAlreadyVoted(recipeId, userId)) {
+        if (hasUserAlreadyVoted(recipeId, userId, groupId)) {
             throw new IllegalStateException("User has already voted for this recipe");
         }
         RecipeVotesEntity recipeVote = new RecipeVotesEntity(recipeId, userId, groupId, voteType);
@@ -45,12 +45,14 @@ public class RecipeVotesRepository {
         return getRecipeVoteFromGroup(convertTokenToGroupId(groupToken), recipeId);
     }
 
-    private boolean hasUserAlreadyVoted(int recipeId, int userId) {
+    private boolean hasUserAlreadyVoted(int recipeId, int userId, int groupId) {
         return em.createQuery(
-                "SELECT COUNT(v) FROM RecipeVotesEntity v WHERE v.recipe_id = :recipeId AND v.user_id = :userId",
+                "SELECT COUNT(v) FROM RecipeVotesEntity v " +
+                        "WHERE v.recipe_id = :recipeId AND v.user_id = :userId AND v.group_id = :groupId",
                 Long.class)
                 .setParameter("recipeId", recipeId)
                 .setParameter("userId", userId)
+                .setParameter("groupId", groupId)
                 .getSingleResult() > 0;
     }
 

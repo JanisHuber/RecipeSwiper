@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestScoped
@@ -40,5 +41,14 @@ public class RecipeRepository {
         entity.setImageUrl(recipe.image_url());
         entity.setIngredients(recipe.ingredients());
         entity.setInstructions(recipe.instructions());
+    }
+
+    public List<Recipe> getAllRecipes() {
+        return em.createQuery("SELECT r FROM RecipeEntity r", RecipeEntity.class)
+                .getResultList()
+                .stream()
+                .map(entity -> new Recipe(entity.getRecipeId(), entity.getTitle(), entity.getDescription(),
+                        entity.getIngredients(), entity.getInstructions(), entity.getImageUrl()))
+                .toList();
     }
 }

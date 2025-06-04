@@ -45,7 +45,7 @@ export class RecipePageComponent implements OnInit {
   }
 
   getRecipes() {
-    this.recipeswiperService.getRecipes(this.groupToken).subscribe({
+    this.recipeswiperService.getRecipesForUser(this.groupToken).subscribe({
       next: (recipes) => {
         this.recipes = recipes;
         this.currentIndex = 0;
