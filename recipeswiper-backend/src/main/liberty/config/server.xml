@@ -1,57 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<server description="new server">
+<server description="RecipeSwiper Server">
 
-    <!-- Enable features -->
+    <!-- Enable only needed features for less memory -->
     <featureManager>
-        <feature>jakartaee-10.0</feature>
-        <!--<feature>microProfile-7.0</feature> -->
+        <feature>servlet-6.0</feature>
+        <feature>restfulWS-3.1</feature>
+        <feature>cdi-4.0</feature>
+        <feature>persistence-3.1</feature>
+        <feature>persistenceContainer-3.1</feature>
+        <feature>jdbc-4.2</feature>
+        <feature>beanValidation-3.0</feature>
+        <feature>jsonb-3.0</feature>
+        <feature>jsonp-2.1</feature>
+        <feature>enterpriseBeans-4.0</feature>
+        <feature>enterpriseBeansLite-4.0</feature>
     </featureManager>
 
-    <!-- This template enables security. To get the full use of all the capabilities, a keystore and user registry are required. -->
+    <!-- Dynamic port configuration for Render -->
+    <variable name="default.http.port" defaultValue="9090"/>
+    <variable name="default.https.port" defaultValue="9443"/>
 
-    <!-- For the keystore, default keys are generated and stored in a keystore. To provide the keystore password, generate an
-        encoded password using bin/securityUtility encode and add it below in the password attribute of the keyStore element.
-        Then uncomment the keyStore element. -->
-    <!--
-    <keyStore password=""/>
-    -->
-
-    <!--For a user registry configuration, configure your user registry. For example, configure a basic user registry using the
-        basicRegistry element. Specify your own user name below in the name attribute of the user element. For the password,
-        generate an encoded password using bin/securityUtility encode and add it in the password attribute of the user element.
-        Then uncomment the user element. -->
-
-    <!-- To access this server from a remote client add a host attribute to the following element, e.g. host="*" -->
+    <!-- HTTP Endpoint with dynamic port from environment -->
     <httpEndpoint id="defaultHttpEndpoint"
-                  httpPort="9090"
-                  httpsPort="9443" />
+                  httpPort="${env.PORT}"
+                  httpsPort="${default.https.port}"
+                  host="*" />
 
+    <!-- CORS configuration -->
     <httpDispatcher>
-        <cors enabled="true"/>
+        <cors enabled="true"
+              domain="*"
+              allowCredentials="true"
+              allowedMethods="GET,POST,PUT,DELETE,OPTIONS"
+              allowedHeaders="*"
+              maxAge="3600"/>
     </httpDispatcher>
 
-
-    <!-- Automatically expand WAR files and EAR files -->
+    <!-- Automatically expand WAR files -->
     <applicationManager autoExpand="true"/>
 
-    <!-- Configures the application on a specified context root -->
-    <webApplication contextRoot="/" location="recipeswiper.war" />
+    <!-- Application configuration -->
+    <webApplication contextRoot="/" location="recipeswiper.war">
+        <classloader commonLibraryRef="mariadb"/>
+    </webApplication>
 
-    <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
+    <!-- SSL configuration -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
 
-    <dataSource id="recipeswiper" jndiName="jdbc/recipeswiper">
-        <jdbcDriver libraryRef="mariadb" javax.sql.DataSource="org.mariadb.jdbc.MariaDbDataSource"
-                    javax.sql.XADataSource="org.mariadb.jdbc.MariaDbDataSource"
-                    javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MariaDbDataSource"/>
-
-        <properties url="jdbc:mariadb://localhost:3306/recipeswiper"
-                    user="root"
-                    password="1234"/>
+    <!-- Database configuration -->
+    <dataSource id="MariaDBDS" jndiName="jdbc/recipeswiper">
+        <jdbcDriver libraryRef="mariadbLib"/>
+        <properties
+                serverName="recipeswiper-db"
+                portNumber="3306"
+                databaseName="recipes"
+                user="appuser"
+                password="apppass" />
     </dataSource>
 
+    <!-- MariaDB library -->
     <library id="mariadb">
         <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
     </library>
+
+    <!-- Logging configuration for production -->
+    <logging traceSpecification="*=info" maxFileSize="20" maxFiles="5"/>
 
 </server>

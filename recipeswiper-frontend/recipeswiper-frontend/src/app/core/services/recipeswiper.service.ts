@@ -11,10 +11,11 @@ import { Recipe } from '../models/Recipe';
 import { VoteType } from '../models/VoteType';
 import { RecipeResult } from '../models/RecipeResult';
 import { VoteRequest } from '../models/dto/VoteRequest';
+import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RecipeswiperService {
-  private apiUrl = 'http://localhost:9090/api/recipeswiper';
+  private apiUrl = environment.apiUrl;
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -59,7 +60,8 @@ export class RecipeswiperService {
       .post(`${this.apiUrl}/join`, request, {
         ...this.httpOptions,
         responseType: 'text',
-      }).pipe(
+      })
+      .pipe(
         catchError((error) => {
           if (error.status === 404) {
             return throwError(() => new Error('Group Code invalid'));
@@ -107,7 +109,9 @@ export class RecipeswiperService {
       throw new Error('User token not found');
     }
     return this.http
-      .get<Recipe[]>(`${this.apiUrl}/groups/${groupToken}/${userToken}/get/recipes`)
+      .get<Recipe[]>(
+        `${this.apiUrl}/groups/${groupToken}/${userToken}/get/recipes`
+      )
       .pipe(
         catchError((error) => {
           if (error.status === 404) {
@@ -119,16 +123,14 @@ export class RecipeswiperService {
   }
 
   getAllRecipes(): Observable<Recipe[]> {
-    return this.http
-      .get<Recipe[]>(`${this.apiUrl}/get/recipes`)
-      .pipe(
-        catchError((error) => {
-          if (error.status === 404) {
-            return of([]);
-          }
-          return throwError(() => error);
-        })
-      );
+    return this.http.get<Recipe[]>(`${this.apiUrl}/get/recipes`).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return of([]);
+        }
+        return throwError(() => error);
+      })
+    );
   }
 
   vote(

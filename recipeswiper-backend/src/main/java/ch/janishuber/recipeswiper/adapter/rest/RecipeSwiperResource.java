@@ -125,7 +125,8 @@ public class RecipeSwiperResource {
 
     @GET
     @Path("/groups/{groupToken}/{userToken}/get/recipes")
-    public Response getRecipesByGroup(@PathParam("groupToken") String groupToken, @PathParam("userToken") String userToken) {
+    public Response getRecipesByGroup(@PathParam("groupToken") String groupToken,
+            @PathParam("userToken") String userToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipesForUser(groupToken, userToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
@@ -147,7 +148,8 @@ public class RecipeSwiperResource {
     @Path("/{groupToken}/vote")
     public Response voteRecipe(@PathParam("groupToken") String groupToken, VoteRequest voteRequest) {
         try {
-            recipeVotesRepository.saveVote(voteRequest.recipeId(), voteRequest.userToken(), groupToken, voteRequest.voteType());
+            recipeVotesRepository.saveVote(voteRequest.recipeId(), voteRequest.userToken(), groupToken,
+                    voteRequest.voteType());
         } catch (IllegalStateException e) {
             return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
         }
@@ -178,5 +180,24 @@ public class RecipeSwiperResource {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Group not found").build();
         }
+    }
+
+    // Health check endpoint for Render
+    @GET
+    @Path("/health")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response healthCheck() {
+        return Response.ok("OK").build();
+    }
+
+    // OPTIONS für CORS-Preflight
+    @OPTIONS
+    @Path("{path:.*}")
+    public Response handlePreflight() {
+        return Response.ok()
+                .header("Access-Control-Allow-Origin", "*")
+                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
+                .header("Access-Control-Allow-Headers", "Content-Type, Authorization")
+                .build();
     }
 }
