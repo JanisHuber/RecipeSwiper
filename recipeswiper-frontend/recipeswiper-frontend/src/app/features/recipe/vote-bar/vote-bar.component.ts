@@ -2,6 +2,7 @@ import { Component, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-vote-bar',
+  standalone: true,
   imports: [],
   templateUrl: './vote-bar.component.html',
   styleUrl: './vote-bar.component.css'

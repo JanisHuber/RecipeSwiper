@@ -57,29 +57,74 @@ public class ApiRecipeGenerator {
                 Integer.parseInt(meal.idMeal()),
                 meal.strMeal(),
                 meal.strCategory(),
-                meal.strMeasure1() + ": " + meal.strIngredient1() + ", " +
-                        meal.strMeasure2() + ": " + meal.strIngredient2() + ", " +
-                        meal.strMeasure3() + ": " + meal.strIngredient3() + ", " +
-                        meal.strMeasure4() + ": " + meal.strIngredient4() + ", " +
-                        meal.strMeasure5() + ": " + meal.strIngredient5() + ", " +
-                        meal.strMeasure6() + ": " + meal.strIngredient6() + ", " +
-                        meal.strMeasure7() + ": " + meal.strIngredient7() + ", " +
-                        meal.strMeasure8() + ": " + meal.strIngredient8() + ", " +
-                        meal.strMeasure9() + ": " + meal.strIngredient9() + ", " +
-                        meal.strMeasure10() + ": " + meal.strIngredient10() + ", " +
-                        meal.strMeasure11() + ": " + meal.strIngredient11() + ", " +
-                        meal.strMeasure12() + ": " + meal.strIngredient12() + ", " +
-                        meal.strMeasure13() + ": " + meal.strIngredient13() + ", " +
-                        meal.strMeasure14() + ": " + meal.strIngredient14() + ", " +
-                        meal.strMeasure15() + ": " + meal.strIngredient15() + ", " +
-                        meal.strMeasure16() + ": " + meal.strIngredient16() + ", " +
-                        meal.strMeasure17() + ": " + meal.strIngredient17() + ", " +
-                        meal.strMeasure18() + ": " + meal.strIngredient18() + ", " +
-                        meal.strMeasure19() + ": " + meal.strIngredient19() + ", " +
-                        meal.strMeasure20() + ": " + meal.strIngredient20(),
+                convertIngredientsToString(meal),
                 meal.strInstructions(),
                 meal.strMealThumb()
         );
+    }
 
+    private static String convertIngredientsToString(MealDbDto meal) {
+        StringBuilder ingredients = new StringBuilder();
+        if (meal.strIngredient1() != null && !meal.strIngredient1().isEmpty()) {
+            ingredients.append(meal.strMeasure1()).append(": ").append(meal.strIngredient1()).append(", ");
+        }
+        if (meal.strIngredient2() != null && !meal.strIngredient2().isEmpty()) {
+            ingredients.append(meal.strMeasure2()).append(": ").append(meal.strIngredient2()).append(", ");
+        }
+        if (meal.strIngredient3() != null && !meal.strIngredient3().isEmpty()) {
+            ingredients.append(meal.strMeasure3()).append(": ").append(meal.strIngredient3()).append(", ");
+        }
+        if (meal.strIngredient4() != null && !meal.strIngredient4().isEmpty()) {
+            ingredients.append(meal.strMeasure4()).append(": ").append(meal.strIngredient4()).append(", ");
+        }
+        if (meal.strIngredient5() != null && !meal.strIngredient5().isEmpty()) {
+            ingredients.append(meal.strMeasure5()).append(": ").append(meal.strIngredient5()).append(", ");
+        }
+        if (meal.strIngredient6() != null && !meal.strIngredient6().isEmpty()) {
+            ingredients.append(meal.strMeasure6()).append(": ").append(meal.strIngredient6()).append(", ");
+        }
+        if (meal.strIngredient7() != null && !meal.strIngredient7().isEmpty()) {
+            ingredients.append(meal.strMeasure7()).append(": ").append(meal.strIngredient7()).append(", ");
+        }
+        if (meal.strIngredient8() != null && !meal.strIngredient8().isEmpty()) {
+            ingredients.append(meal.strMeasure8()).append(": ").append(meal.strIngredient8()).append(", ");
+        }
+        if (meal.strIngredient9() != null && !meal.strIngredient9().isEmpty()) {
+            ingredients.append(meal.strMeasure9()).append(": ").append(meal.strIngredient9()).append(", ");
+        }
+        if (meal.strIngredient10() != null && !meal.strIngredient10().isEmpty()) {
+            ingredients.append(meal.strMeasure10()).append(": ").append(meal.strIngredient10()).append(", ");
+        }
+        if (meal.strIngredient11() != null && !meal.strIngredient11().isEmpty()) {
+            ingredients.append(meal.strMeasure11()).append(": ").append(meal.strIngredient11()).append(", ");
+        }
+        if (meal.strIngredient12() != null && !meal.strIngredient12().isEmpty()) {
+            ingredients.append(meal.strMeasure12()).append(": ").append(meal.strIngredient12()).append(", ");
+        }
+        if (meal.strIngredient13() != null && !meal.strIngredient13().isEmpty()) {
+            ingredients.append(meal.strMeasure13()).append(": ").append(meal.strIngredient13()).append(", ");
+        }
+        if (meal.strIngredient14() != null && !meal.strIngredient14().isEmpty()) {
+            ingredients.append(meal.strMeasure14()).append(": ").append(meal.strIngredient14()).append(", ");
+        }
+        if (meal.strIngredient15() != null && !meal.strIngredient15().isEmpty()) {
+            ingredients.append(meal.strMeasure15()).append(": ").append(meal.strIngredient15()).append(", ");
+        }
+        if (meal.strIngredient16() != null && !meal.strIngredient16().isEmpty()) {
+            ingredients.append(meal.strMeasure16()).append(": ").append(meal.strIngredient16()).append(", ");
+        }
+        if (meal.strIngredient17() != null && !meal.strIngredient17().isEmpty()) {
+            ingredients.append(meal.strMeasure17()).append(": ").append(meal.strIngredient17()).append(", ");
+        }
+        if (meal.strIngredient18() != null && !meal.strIngredient18().isEmpty()) {
+            ingredients.append(meal.strMeasure18()).append(": ").append(meal.strIngredient18()).append(", ");
+        }
+        if (meal.strIngredient19() != null && !meal.strIngredient19().isEmpty()) {
+            ingredients.append(meal.strMeasure19()).append(": ").append(meal.strIngredient19()).append(", ");
+        }
+        if (meal.strIngredient20() != null && !meal.strIngredient20().isEmpty()) {
+            ingredients.append(meal.strMeasure20()).append(": ").append(meal.strIngredient20());
+        }
+        return ingredients.toString();
     }
 }

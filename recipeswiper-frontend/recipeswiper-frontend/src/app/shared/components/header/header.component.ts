@@ -1,4 +1,10 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnInit,
+  HostListener,
+  ElementRef,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../core/services/user.service';
 import { User } from '../../../core/models/dto/user';
@@ -19,8 +25,13 @@ export class HeaderComponent implements OnInit {
 
   currentUser: User | null = null;
   showMenu: boolean = false;
+  showGroupsSubmenu: boolean = false;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private elementRef: ElementRef
+  ) {}
 
   ngOnInit() {
     this.userService
@@ -30,13 +41,32 @@ export class HeaderComponent implements OnInit {
       });
   }
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event) {
+    const target = event.target as HTMLElement;
+    const clickedInside = this.elementRef.nativeElement.contains(target);
+
+    if (!clickedInside && this.showMenu) {
+      this.showMenu = false;
+      this.showGroupsSubmenu = false;
+    }
+  }
+
   toggleMenu() {
     this.showMenu = !this.showMenu;
+    if (!this.showMenu) {
+      this.showGroupsSubmenu = false;
+    }
+  }
+
+  toggleGroupsSubmenu() {
+    this.showGroupsSubmenu = !this.showGroupsSubmenu;
   }
 
   navigateToGroup(group: Group) {
     this.router.navigate([`/recipeswiper/group/${group.groupToken}`]);
     this.showMenu = false;
+    this.showGroupsSubmenu = false;
   }
 
   logout() {

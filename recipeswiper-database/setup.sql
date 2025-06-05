@@ -62,3 +62,24 @@ CREATE TABLE recipe_votes
     FOREIGN KEY (recipe_id) REFERENCES recipes (id),
     FOREIGN KEY (group_id) REFERENCES `groups` (id)
 );
+
+/*
+ For Future Refactoring
+ CREATE TABLE ingredients
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    recipe_id   INT NOT NULL,
+    ingredient  VARCHAR(255) NOT NULL,
+    FOREIGN KEY (recipe_id) REFERENCES recipes (id)
+);
+
+ CREATE TABLE recipes
+(
+    recipeId           INT AUTO_INCREMENT PRIMARY KEY,
+    mealId            INT NOT NULL,
+    title        VARCHAR(255) NOT NULL,
+    category  TEXT,
+    instructions TEXT,
+    image_url    VARCHAR(255)
+);
+ */

@@ -3,6 +3,7 @@ import { RecipeResult } from '../../../core/models/RecipeResult';
 
 @Component({
   selector: 'app-vote-summary',
+  standalone: true,
   imports: [],
   templateUrl: './vote-summary.component.html',
   styleUrl: './vote-summary.component.css',

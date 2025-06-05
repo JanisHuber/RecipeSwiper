@@ -4,8 +4,8 @@ import { Group } from '../../../core/models/dto/Group';
 
 @Component({
   selector: 'app-group-card',
-  imports: [],
   standalone: true,
+  imports: [],
   templateUrl: './group-card.component.html',
   styleUrl: './group-card.component.css'
 })
