@@ -1,0 +1,10 @@
+{
+  "buildCommand": "ng build --configuration production",
+  "outputDirectory": "dist/recipeswiper-frontend",
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+} 
