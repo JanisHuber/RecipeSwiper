@@ -1,6 +1,7 @@
-package ch.janishuber.recipeswiper.domain;
+package ch.janishuber.recipeswiper.domain.testing;
 
 import ch.janishuber.recipeswiper.adapter.persistence.RecipeRepository;
+import ch.janishuber.recipeswiper.domain.Recipe;
 
 public class AddTestingRecipes {
 

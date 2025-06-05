@@ -12,6 +12,7 @@ import java.util.*;
 
 import ch.janishuber.recipeswiper.adapter.rest.dto.VoteRequest;
 import ch.janishuber.recipeswiper.domain.*;
+import ch.janishuber.recipeswiper.domain.testing.ApiRecipeGenerator;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -90,15 +91,15 @@ public class RecipeSwiperResource {
     @GET
     @Path("/{groupToken}/load/recipes")
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
-        // todo implement dynamic recipe loading
-        for (int i = 1; i <= 5; i++) {
-            Optional<Recipe> recipe = recipeRepository.getRecipe(i);
-            if (recipe.isPresent()) {
-                groupRecipesRepository.addRecipeToGroup(recipe.get().recipeId(), groupToken);
-            } else {
-                return Response.status(Response.Status.NOT_FOUND).entity("No Recipe found for ID: " + i).build();
+        ApiRecipeGenerator apiRecipeGenerator = new ApiRecipeGenerator();
+        apiRecipeGenerator.getRandomRecipe(5).forEach(recipe -> {
+            try {
+                int recipeId = recipeRepository.save(recipe);
+                groupRecipesRepository.addRecipeToGroup(recipeId, groupToken);
+            } catch (IllegalStateException e) {
+                System.out.println("Recipe already exists: " + recipe.recipeId());
             }
-        }
+        });
         return Response.ok("Recipes loaded into group").build();
     }
 

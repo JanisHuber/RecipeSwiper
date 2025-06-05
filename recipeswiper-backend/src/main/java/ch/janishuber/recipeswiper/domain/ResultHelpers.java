@@ -19,4 +19,8 @@ public class ResultHelpers {
                         .sum()).reversed())
                 .toList();
     }
+
+    public static List<String> getFavoriteCategories(List<RecipeResult> sortedRecipeResultList) {
+        return List.of(sortedRecipeResultList.getFirst().description() + sortedRecipeResultList.get(1).description());
+    }
 }

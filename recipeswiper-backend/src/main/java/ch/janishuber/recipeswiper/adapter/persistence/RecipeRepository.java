@@ -16,11 +16,12 @@ public class RecipeRepository {
     private EntityManager em;
 
     @Transactional
-    public void save(Recipe recipe) {
+    public int save(Recipe recipe) {
         RecipeEntity recipeEntity = new RecipeEntity(recipe.title(), recipe.description(), recipe.image_url(),
                 recipe.ingredients(), recipe.instructions());
         em.persist(recipeEntity);
         em.flush();
+        return recipeEntity.getRecipeId();
     }
 
     public Optional<Recipe> getRecipe(int recipeId) {
