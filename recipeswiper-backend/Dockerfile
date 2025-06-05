@@ -1,4 +1,4 @@
-FROM openliberty/open-liberty:kernel-slim-java21-openj9
+FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9
 
 # Copy application files
 COPY --chown=1001:0 src/ /config/
