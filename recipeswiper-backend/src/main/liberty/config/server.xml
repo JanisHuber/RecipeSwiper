@@ -53,7 +53,7 @@
         <properties
                 serverName="recipeswiper-db"
                 portNumber="3306"
-                databaseName="recipes"
+                databaseName="recipeswiper"
                 user="appuser"
                 password="apppass" />
     </dataSource>
