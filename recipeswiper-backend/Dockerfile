@@ -25,7 +25,10 @@ RUN echo "-Xmx256m" >> /config/jvm.options && \
     echo "-Xtune:virtualized" >> /config/jvm.options && \
     echo "-XX:+UseContainerSupport" >> /config/jvm.options
 
-# Expose port (Render will set PORT env var)
-EXPOSE 9090
+# Set default PORT if not provided (Render default is 10000)
+ENV PORT=10000
+
+# Expose the port that will be set by Render
+EXPOSE $PORT
 
 CMD ["/opt/ol/wlp/bin/server", "run", "defaultServer"]
