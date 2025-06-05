@@ -34,7 +34,6 @@ export class GroupPageComponent {
         .getResultRecipes(this.groupToken)
         .subscribe((recipes) => {
           this.resultRecipes = recipes;
-          console.log(this.resultRecipes);
         });
     }
   }

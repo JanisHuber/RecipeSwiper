@@ -17,6 +17,20 @@ public class RecipeRepository {
 
     @Transactional
     public int save(Recipe recipe) {
+        List<?> existing = em.createQuery("""
+                    SELECT r FROM RecipeEntity r WHERE r.title = :title AND r.description = :description
+                    """)
+                .setParameter("title", recipe.title())
+                .setParameter("description", recipe.description())
+                .getResultList();
+        if (!existing.isEmpty()) {
+            Object existingRecipe = existing.get(0);
+            Integer existingRecipeId = null;
+            if (existingRecipe instanceof RecipeEntity) {
+                existingRecipeId = ((RecipeEntity) existingRecipe).getRecipeId();
+            }
+            throw new IllegalStateException("" + existingRecipeId);
+        }
         RecipeEntity recipeEntity = new RecipeEntity(recipe.title(), recipe.description(), recipe.image_url(),
                 recipe.ingredients(), recipe.instructions());
         em.persist(recipeEntity);

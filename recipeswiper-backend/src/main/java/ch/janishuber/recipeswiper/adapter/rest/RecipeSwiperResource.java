@@ -93,12 +93,13 @@ public class RecipeSwiperResource {
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
         ApiRecipeGenerator apiRecipeGenerator = new ApiRecipeGenerator();
         apiRecipeGenerator.getRandomRecipe(5).forEach(recipe -> {
+            int recipeId = 0;
             try {
-                int recipeId = recipeRepository.save(recipe);
-                groupRecipesRepository.addRecipeToGroup(recipeId, groupToken);
+                recipeId = recipeRepository.save(recipe);
             } catch (IllegalStateException e) {
-                System.out.println("Recipe already exists: " + recipe.recipeId());
+                recipeId = Integer.parseInt(e.getMessage());
             }
+            groupRecipesRepository.addRecipeToGroup(recipeId, groupToken);
         });
         return Response.ok("Recipes loaded into group").build();
     }
