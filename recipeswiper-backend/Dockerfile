@@ -1,4 +1,4 @@
-FROM openliberty/open-liberty:23.0.0.12-kernel-slim-java21-openj9
+FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9-ubi-minimal
 
 # Copy application files
 COPY --chown=1001:0 src/ /config/
@@ -9,7 +9,7 @@ WORKDIR /config
 
 # Install Maven and build the application
 USER root
-RUN apt-get update && apt-get install -y maven && rm -rf /var/lib/apt/lists/*
+RUN microdnf install -y maven && microdnf clean all
 
 # Build the application with minimal features
 RUN mvn clean package -DskipTests && \
