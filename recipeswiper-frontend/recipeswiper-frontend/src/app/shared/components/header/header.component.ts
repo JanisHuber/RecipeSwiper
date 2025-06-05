@@ -44,6 +44,6 @@ export class HeaderComponent implements OnInit {
   }
 
   navigateToProfile() {
-    this.router.navigate([`/recipeswiper/user/${this.currentUser?.userToken}`]);
+    this.router.navigate([`/recipeswiper/user`]);
   }
 }

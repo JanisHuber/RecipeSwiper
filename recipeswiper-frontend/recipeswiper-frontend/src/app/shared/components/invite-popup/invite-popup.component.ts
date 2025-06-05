@@ -19,7 +19,7 @@ export class InvitePopupComponent {
   copyToClipboard() {
     navigator.clipboard.writeText(this.groupToken).then(() => {
       this.copied = true;
-      setTimeout(() => this.copied = false, 1500);
+      setTimeout(() => this.copied = false, 2000);
     });
   }
 

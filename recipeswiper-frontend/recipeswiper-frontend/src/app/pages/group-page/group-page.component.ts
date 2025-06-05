@@ -23,7 +23,6 @@ export class GroupPageComponent {
 
   constructor(
     private recipeswiperService: RecipeswiperService,
-    private userService: UserService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -35,6 +34,7 @@ export class GroupPageComponent {
         .getResultRecipes(this.groupToken)
         .subscribe((recipes) => {
           this.resultRecipes = recipes;
+          console.log(this.resultRecipes);
         });
     }
   }

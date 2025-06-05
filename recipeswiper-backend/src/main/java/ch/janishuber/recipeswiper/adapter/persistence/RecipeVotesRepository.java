@@ -9,6 +9,8 @@ import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
+import java.util.List;
+
 @RequestScoped
 public class RecipeVotesRepository {
     @PersistenceContext(name = "jpa-unit")
@@ -27,21 +29,24 @@ public class RecipeVotesRepository {
         saveVote(recipeId, convertTokenToUserId(userToken), convertTokenToGroupId(groupToken), voteType);
     }
 
-    public VoteResult getRecipeVoteFromGroup(int groupId, int recipeId) {
+    public List<VoteResult> getRecipeVoteFromGroup(int groupId, int recipeId) {
         try {
-            RecipeVotesEntity r = em.createQuery(
+            List<RecipeVotesEntity> r = em.createQuery(
                     "SELECT r FROM RecipeVotesEntity r WHERE r.group_id = :groupId AND r.recipe_id = :recipeId",
                     RecipeVotesEntity.class)
                     .setParameter("groupId", groupId)
                     .setParameter("recipeId", recipeId)
-                    .getSingleResult();
-            return new VoteResult(r.getUser_id(), r.getRecipe_id(), r.getGroup_id(), r.getVote());
+                    .getResultList();
+            return r.stream()
+                    .map(vote -> new VoteResult(vote.getUser_id(), vote.getRecipe_id(), vote.getGroup_id(),
+                            vote.getVote()))
+                    .toList();
         } catch (NoResultException e) {
             return null;
         }
     }
 
-    public VoteResult getRecipeVoteFromGroup(String groupToken, int recipeId) {
+    public List<VoteResult> getRecipeVoteFromGroup(String groupToken, int recipeId) {
         return getRecipeVoteFromGroup(convertTokenToGroupId(groupToken), recipeId);
     }
 

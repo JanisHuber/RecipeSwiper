@@ -59,7 +59,14 @@ export class RecipeswiperService {
       .post(`${this.apiUrl}/join`, request, {
         ...this.httpOptions,
         responseType: 'text',
-      })
+      }).pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return throwError(() => new Error('Group Code invalid'));
+          }
+          return throwError(() => error);
+        })
+      )
       .subscribe((response) => {
         this.router.navigate([`/recipeswiper/recipe/${groupToken}`]);
       });
@@ -165,7 +172,7 @@ export class RecipeswiperService {
 
   getResultRecipes(groupToken: string): Observable<RecipeResult[]> {
     return this.http
-      .get<RecipeResult[]>(`${this.apiUrl}/${groupToken}/get/result`)
+      .get<RecipeResult[]>(`${this.apiUrl}/groups/${groupToken}/get/results`)
       .pipe(
         catchError((error) => {
           if (error.status === 404) {

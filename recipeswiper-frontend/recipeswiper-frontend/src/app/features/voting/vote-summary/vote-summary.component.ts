@@ -5,8 +5,14 @@ import { RecipeResult } from '../../../core/models/RecipeResult';
   selector: 'app-vote-summary',
   imports: [],
   templateUrl: './vote-summary.component.html',
-  styleUrl: './vote-summary.component.css'
+  styleUrl: './vote-summary.component.css',
 })
 export class VoteSummaryComponent {
   @Input() resultRecipes: RecipeResult[] = [];
+
+  public numberOfShowedRecipes = 3;
+
+  public showMoreRecipes() {
+    this.numberOfShowedRecipes += 3;
+  }
 }

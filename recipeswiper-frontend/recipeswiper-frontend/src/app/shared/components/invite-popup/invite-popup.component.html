@@ -1,8 +1,8 @@
 <div class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50" (click)="onClose()">
   <div class="bg-white rounded-lg shadow-lg p-8 w-full max-w-sm relative" (click)="$event.stopPropagation()">
     <button (click)="onClose()" class="absolute top-2 right-2 text-gray-400 hover:text-gray-700 text-2xl font-bold">&times;</button>
-    <h2 class="text-xl font-semibold mb-4 text-center">Lade Freunde ein</h2>
-    <p class="mb-4 text-center">Lade Freunde mithilfe dem Code ein:</p>
+    <h2 class="text-xl font-semibold mb-4 text-center">Invite your friends</h2>
+    <p class="mb-4 text-center">Invite your friends using the code below:</p>
     <div class="flex items-center justify-center mb-4">
       <input 
         type="text" 
@@ -17,6 +17,6 @@
         Copy
       </button>
     </div>
-    <div *ngIf="copied" class="text-green-600 text-center mb-2">In die Zwischenablage kopiert!</div>
+    <div *ngIf="copied" class="text-green-600 text-center mb-2">Copied to clipboard!</div>
   </div>
 </div>

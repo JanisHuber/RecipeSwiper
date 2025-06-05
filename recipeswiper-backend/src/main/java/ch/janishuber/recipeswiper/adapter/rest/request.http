@@ -43,3 +43,10 @@ Content-Type: application/json
 {
   "recipeId": 1
 }
+
+###
+
+GET http://localhost:9090/api/recipeswiper/groups/2eab7c13-8afc-4cf6-9290-9864e2848b4e/get/results
+Content-Type: application/json
+
+

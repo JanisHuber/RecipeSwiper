@@ -2,10 +2,12 @@ package ch.janishuber.recipeswiper.adapter.rest.dto;
 
 import ch.janishuber.recipeswiper.domain.Recipe;
 import ch.janishuber.recipeswiper.domain.VoteResult;
+import java.util.List;
 
-public record RecipeResult(int recipeId, String title, String description, String ingredients, String instructions, String image_url, VoteResult voteResult) {
 
-    public static RecipeResult ofRecipe(Recipe recipe, VoteResult voteResult) {
+public record RecipeResult(int recipeId, String title, String description, String ingredients, String instructions, String image_url, List<VoteResult> voteResults) {
+
+    public static RecipeResult ofRecipe(Recipe recipe, List<VoteResult> voteResults) {
         return new RecipeResult(
                 recipe.recipeId(),
                 recipe.title(),
@@ -13,7 +15,7 @@ public record RecipeResult(int recipeId, String title, String description, Strin
                 recipe.ingredients(),
                 recipe.instructions(),
                 recipe.image_url(),
-                voteResult
+                voteResults
         );
     }
 }

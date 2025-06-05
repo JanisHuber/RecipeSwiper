@@ -3,14 +3,12 @@ package ch.janishuber.recipeswiper.adapter.rest;
 import ch.janishuber.recipeswiper.adapter.persistence.*;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
 import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RecipeResult;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestCreateUser;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 import ch.janishuber.recipeswiper.adapter.rest.dto.VoteRequest;
 import ch.janishuber.recipeswiper.domain.*;
@@ -106,19 +104,21 @@ public class RecipeSwiperResource {
 
     @GET
     @Path("/groups/{groupToken}/get/results")
-    // todo implement dynamic summary
     public Response getRecipes(@PathParam("groupToken") String groupToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
         }
+
         List<RecipeResult> results = new ArrayList<>();
         for (Recipe recipe : recipes) {
-            VoteResult voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
+            List<VoteResult> voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
             RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
             results.add(recipeResult);
         }
-        return Response.ok(results).build();
+
+        List<RecipeResult> sortedResults = ResultHelpers.sortMatchesFromResults(results);
+        return Response.ok(sortedResults).build();
     }
 
     @GET
