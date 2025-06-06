@@ -17,11 +17,6 @@ WORKDIR /config
 USER root
 RUN microdnf install -y maven && microdnf clean all
 
-# Download MariaDB JDBC driver
-RUN mkdir -p /opt/ol/wlp/usr/shared/resources && \
-    curl -o /opt/ol/wlp/usr/shared/resources/mariadb-java-client-3.3.3.jar \
-    https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.3.3/mariadb-java-client-3.3.3.jar
-
 # Build the application with minimal features
 RUN mvn clean package -DskipTests && \
     cp target/recipeswiper.war /config/apps/ && \

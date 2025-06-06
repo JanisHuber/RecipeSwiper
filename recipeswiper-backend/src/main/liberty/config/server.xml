@@ -41,7 +41,7 @@
 
     <!-- Application configuration -->
     <webApplication contextRoot="/" location="recipeswiper.war">
-        <classloader commonLibraryRef="mariadbLib"/>
+        <classloader commonLibraryRef="mariadb"/>
     </webApplication>
 
     <!-- SSL configuration -->
@@ -59,7 +59,7 @@
     </dataSource>
 
     <!-- MariaDB library -->
-    <library id="mariadbLib">
+    <library id="mariadb">
         <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
     </library>
 
