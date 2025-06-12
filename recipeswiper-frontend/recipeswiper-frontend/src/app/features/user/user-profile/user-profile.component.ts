@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '../../../core/models/dto/user';
+import { User } from '../../../core/models/dto/User';
 import { RecipeswiperService } from '../../../core/services/recipeswiper.service';
 import { ActivatedRoute } from '@angular/router';
 

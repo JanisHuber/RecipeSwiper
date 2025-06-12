@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecipeswiperService } from '../../core/services/recipeswiper.service';
-import { UserService } from '../../core/services/user.service';
 import { VoteSummaryComponent } from '../../features/voting/vote-summary/vote-summary.component';
 import { RecipeResult } from '../../core/models/RecipeResult';
 import { Router, ActivatedRoute } from '@angular/router';

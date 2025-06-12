@@ -1,4 +1,4 @@
-package ch.janishuber.recipeswiper.adapter.persistence.Entity;
+package ch.janishuber.recipeswiper.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 
@@ -32,33 +32,43 @@ public class RecipeVotesEntity {
         this.group_id = group_id;
         this.vote = vote;
     }
+
     public int getId() {
         return id;
     }
+
     public void setId(int id) {
         this.id = id;
     }
+
     public int getUser_id() {
         return user_id;
     }
+
     public void setUser_id(int user_id) {
         this.user_id = user_id;
     }
+
     public int getRecipe_id() {
         return recipe_id;
     }
+
     public void setRecipe_id(int recipe_id) {
         this.recipe_id = recipe_id;
     }
+
     public int getGroup_id() {
         return group_id;
     }
+
     public void setGroup_id(int group_id) {
         this.group_id = group_id;
     }
+
     public VoteType getVote() {
         return vote;
     }
+
     public void setVote(VoteType vote) {
         this.vote = vote;
     }

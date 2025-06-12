@@ -1,6 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Recipe } from '../../../core/models/Recipe';
+import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-recipe-card-small',
@@ -13,7 +15,9 @@ export class RecipeCardSmallComponent {
   @Input() recipe!: Recipe;
   @Output() view = new EventEmitter<void>();
 
-  viewRecipe() {
-    this.view.emit();
+  constructor(private router: Router) {}
+
+  viewRecipe(recipeId: number) {
+    this.router.navigate(['/recipeswiper/recipe/view/' + recipeId]);
   }
 }

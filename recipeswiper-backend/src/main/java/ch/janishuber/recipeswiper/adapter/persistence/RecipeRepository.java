@@ -1,6 +1,6 @@
 package ch.janishuber.recipeswiper.adapter.persistence;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.RecipeEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.RecipeEntity;
 import ch.janishuber.recipeswiper.domain.Recipe;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -15,22 +15,26 @@ public class RecipeRepository {
     @PersistenceContext(name = "jpa-unit")
     private EntityManager em;
 
-    @Transactional
-    public int save(Recipe recipe) {
-        List<?> existing = em.createQuery("""
-                    SELECT r FROM RecipeEntity r WHERE r.title = :title AND r.description = :description
-                    """)
+    public Optional<Recipe> find(Recipe recipe) {
+        List<RecipeEntity> entities = em.createQuery("""
+                        SELECT r FROM RecipeEntity r WHERE r.title = :title AND r.description = :description
+                        """, RecipeEntity.class)
                 .setParameter("title", recipe.title())
                 .setParameter("description", recipe.description())
                 .getResultList();
-        if (!existing.isEmpty()) {
-            Object existingRecipe = existing.get(0);
-            Integer existingRecipeId = null;
-            if (existingRecipe instanceof RecipeEntity) {
-                existingRecipeId = ((RecipeEntity) existingRecipe).getRecipeId();
-            }
-            throw new IllegalStateException("" + existingRecipeId);
+
+        if (entities.isEmpty()) {
+            return Optional.empty();
         }
+
+        RecipeEntity entity = entities.get(0);
+        Recipe foundRecipe = new Recipe(entity.getRecipeId(), entity.getTitle(), entity.getDescription(),
+                entity.getIngredients(), entity.getInstructions(), entity.getImageUrl());
+        return Optional.of(foundRecipe);
+    }
+
+    @Transactional
+    public int save(Recipe recipe) {
         RecipeEntity recipeEntity = new RecipeEntity(recipe.title(), recipe.description(), recipe.image_url(),
                 recipe.ingredients(), recipe.instructions());
         em.persist(recipeEntity);

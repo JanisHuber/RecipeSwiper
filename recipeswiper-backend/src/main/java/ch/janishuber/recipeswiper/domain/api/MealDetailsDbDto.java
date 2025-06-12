@@ -1,6 +1,6 @@
-package ch.janishuber.recipeswiper.domain.testing;
+package ch.janishuber.recipeswiper.domain.api;
 
-public record MealDbDto(
+public record MealDetailsDbDto(
         String idMeal,
         String strMeal,
         String strMealAlternate,
@@ -32,7 +32,6 @@ public record MealDbDto(
         String strIngredient19,
         String strIngredient20,
 
-        // Measures
         String strMeasure1,
         String strMeasure2,
         String strMeasure3,

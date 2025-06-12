@@ -1,12 +1,16 @@
 <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
-    <h2 class="text-2xl font-bold text-gray-800 mb-2">Browse Recipes</h2>
-    <p class="text-gray-600 mb-6">Here you can find all available recipes.</p>
+  <h2 class="text-2xl font-bold text-gray-800 mb-2">Browse Recipes</h2>
+  <p class="text-gray-600 mb-6">Here you can find all available recipes.</p>
 
-    @for (recipe of recipes; track recipe.recipeId; let i = $index) { @if (i < numberOfShowedRecipes) {
-        <app-recipe-card-small [recipe]="recipe"></app-recipe-card-small>
-        } } @if (numberOfShowedRecipes < recipes.length) { <button (click)="showMoreRecipes()"
-            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors">
-            Show More Recipes
-            </button>   
-            }
+  @for (recipe of recipes; track recipe.recipeId; let i = $index) { @if (i <
+  numberOfShowedRecipes) {
+  <app-recipe-card-small [recipe]="recipe"></app-recipe-card-small>
+  } } @if (numberOfShowedRecipes < recipes.length) {
+  <button
+    (click)="showMoreRecipes()"
+    class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors"
+  >
+    Show More Recipes
+  </button>
+  }
 </div>

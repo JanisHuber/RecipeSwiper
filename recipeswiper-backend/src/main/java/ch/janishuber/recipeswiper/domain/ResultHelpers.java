@@ -1,8 +1,12 @@
 package ch.janishuber.recipeswiper.domain;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
+import ch.janishuber.recipeswiper.adapter.persistence.GroupRecipesRepository;
+import ch.janishuber.recipeswiper.adapter.persistence.RecipeVotesRepository;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.VoteType;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RecipeResult;
+import ch.janishuber.recipeswiper.domain.api.Tags;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -14,13 +18,30 @@ public class ResultHelpers {
                         .mapToInt(voteResult -> switch (voteResult.vote()) {
                             case VoteType.LIKE -> 1;
                             case VoteType.DISLIKE -> -1;
-                            default -> 0;
                         })
                         .sum()).reversed())
                 .toList();
     }
 
-    public static List<String> getFavoriteCategories(List<RecipeResult> sortedRecipeResultList) {
-        return List.of(sortedRecipeResultList.getFirst().description() + sortedRecipeResultList.get(1).description());
+    public static List<Tags> getFavoriteCategories(String groupToken, GroupRecipesRepository groupRecipesRepository, RecipeVotesRepository recipeVotesRepository) {
+        List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
+        if (recipes.isEmpty()) {
+            return List.of();
+        }
+
+        List<RecipeResult> results = new ArrayList<>();
+        for (Recipe recipe : recipes) {
+            List<VoteResult> voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
+            RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
+            results.add(recipeResult);
+        }
+
+        List<RecipeResult> sortedResults = ResultHelpers.sortMatchesFromResults(results);
+
+        List<Tags> tags = new ArrayList<>();
+        sortedResults.forEach(recipe -> {
+            tags.add(Tags.valueOf(recipe.description().toUpperCase()));
+        });
+        return tags;
     }
 }

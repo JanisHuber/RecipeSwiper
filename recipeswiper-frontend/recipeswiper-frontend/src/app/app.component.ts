@@ -5,7 +5,7 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { ErrorPopupComponent } from './shared/components/error-popup/error-popup.component';
 import { Group } from './core/models/dto/Group';
 import { RecipeswiperService } from './core/services/recipeswiper.service';
-import { User } from './core/models/dto/user';
+import { User } from './core/models/dto/User';
 import { UserService } from './core/services/user.service';
 import { Router } from '@angular/router';
 
@@ -35,14 +35,16 @@ export class AppComponent implements OnInit {
       .getCurrentUserObservable()
       .subscribe((user: User | null) => {
         this.currentUser = user;
-        this.recipeswiperService
-          .getGroups(this.currentUser?.userToken || '')
-          .subscribe((groups) => (this.groups = groups));
       });
 
     this.router.events.subscribe(() => {
+      this.recipeswiperService
+        .getGroups(this.currentUser?.userToken || '')
+        .subscribe((groups) => (this.groups = groups));
+
       const url = this.router.url;
-      const match = url.match(/recipe\/([^/]+)/) || url.match(/group\/([^/]+)/);
+      const match =
+        url.match(/recipe\/swipe\/([^/]+)/) || url.match(/group\/([^/]+)/);
       if (match) {
         this.showGroup = true;
         const groupToken = match[1];

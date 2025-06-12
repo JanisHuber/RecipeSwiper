@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { RecipeswiperService } from '../../../core/services/recipeswiper.service';
-import { User } from '../../../core/models/dto/user';
+import { User } from '../../../core/models/dto/User';
 import { FormsModule } from '@angular/forms';
 
 @Component({

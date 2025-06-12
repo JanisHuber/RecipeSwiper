@@ -1,4 +1,4 @@
-import { User } from '../models/dto/user';
+import { User } from '../models/dto/User';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
@@ -44,19 +44,27 @@ export class RecipeswiperService {
     return this.http.get<User>(
       `${this.apiUrl}/${userToken}/user`,
       this.httpOptions
+    ).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          return throwError(() => new Error('User not found'));
+        }
+        return throwError(() => error);
+      })
     );
   }
 
-  joinGroup(groupToken: string): void {
+  joinGroup(groupToken: string): Observable<string> {
     const userToken: string = this.userService.getUserToken() || '';
     if (userToken === '') {
-      return;
+      return throwError(() => new Error('User token not found'));
     }
     const request: RequestJoin = {
       groupToken: groupToken,
       userToken: userToken,
     };
-    this.http
+
+    return this.http
       .post(`${this.apiUrl}/join`, request, {
         ...this.httpOptions,
         responseType: 'text',
@@ -66,12 +74,12 @@ export class RecipeswiperService {
           if (error.status === 404) {
             return throwError(() => new Error('Group Code invalid'));
           }
-          return throwError(() => error);
+          if (error.status === 400) {
+            return throwError(() => new Error('You are already in this group'));
+          }
+          return throwError(() => new Error('Error joining group'));
         })
-      )
-      .subscribe((response) => {
-        this.router.navigate([`/recipeswiper/recipe/${groupToken}`]);
-      });
+      );
   }
 
   createGroup(name: string): void {
@@ -85,22 +93,24 @@ export class RecipeswiperService {
       })
       .subscribe((response) => {
         const group: Group = response;
-        this.joinGroup(group.groupToken);
+        this.joinGroup(group.groupToken).subscribe((response) => {
+          this.router.navigate([`/recipeswiper/recipe/${group.groupToken}`]);
+        });
       });
   }
 
-  loadRecipes(groupToken: string): void {
+  loadRecipes(groupToken: string): Observable<string> {
     const userToken: string = this.userService.getUserToken() || '';
     if (userToken === '') {
       throw new Error('User token not found');
     }
-    this.http
-      .get(`${this.apiUrl}/${groupToken}/load/recipes`, {
-        responseType: 'text',
-      })
-      .subscribe((response) => {
-        console.log(response);
-      });
+    return this.http.get(`${this.apiUrl}/${groupToken}/load/recipes`, {
+      responseType: 'text',
+    });
+  }
+
+  getRecipeById(recipeId: number): Observable<Recipe> {
+    return this.http.get<Recipe>(`${this.apiUrl}/recipes/${recipeId}`);
   }
 
   getRecipesForUser(groupToken: string): Observable<Recipe[]> {
@@ -186,7 +196,6 @@ export class RecipeswiperService {
   }
 
   getGroups(userToken: string): Observable<Group[]> {
-    //todo: add error handling
     if (!userToken) {
       throw new Error('User token not found');
     }

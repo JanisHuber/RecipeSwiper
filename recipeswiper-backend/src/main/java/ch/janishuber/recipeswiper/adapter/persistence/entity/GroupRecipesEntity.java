@@ -1,25 +1,26 @@
-package ch.janishuber.recipeswiper.adapter.persistence.Entity;
+package ch.janishuber.recipeswiper.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usertogroup")
-public class UserToGroupEntity {
+@Table(name = "group_recipes")
+public class GroupRecipesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(name = "user_id")
-    private int user_id;
+    @Column(name = "recipe_id")
+    private int recipe_id;
 
     @Column(name = "group_id")
     private int group_id;
 
-    public UserToGroupEntity() {
+
+    public GroupRecipesEntity() {
     }
 
-    public UserToGroupEntity(int user_id, int group_id) {
-        this.user_id = user_id;
+    public GroupRecipesEntity(int recipe_id, int group_id) {
+        this.recipe_id = recipe_id;
         this.group_id = group_id;
     }
 
@@ -31,12 +32,12 @@ public class UserToGroupEntity {
         this.id = id;
     }
 
-    public int getUser_id() {
-        return user_id;
+    public int getRecipe_id() {
+        return recipe_id;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setRecipe_id(int recipe_id) {
+        this.recipe_id = recipe_id;
     }
 
     public int getGroup_id() {

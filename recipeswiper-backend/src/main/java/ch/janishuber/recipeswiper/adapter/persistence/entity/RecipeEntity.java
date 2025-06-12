@@ -1,5 +1,4 @@
-package ch.janishuber.recipeswiper.adapter.persistence.Entity;
-
+package ch.janishuber.recipeswiper.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 
@@ -21,7 +20,8 @@ public class RecipeEntity {
     @Column(name = "image_url")
     private String imageUrl;
 
-    public RecipeEntity() {}
+    public RecipeEntity() {
+    }
 
     public RecipeEntity(String title, String description, String imageUrl, String ingredients, String instructions) {
         this.title = title;

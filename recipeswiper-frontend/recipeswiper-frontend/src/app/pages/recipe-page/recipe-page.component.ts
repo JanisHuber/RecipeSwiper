@@ -38,10 +38,11 @@ export class RecipePageComponent implements OnInit {
   }
 
   loadRecipes() {
-    this.recipeswiperService.loadRecipes(this.groupToken);
-    setTimeout(() => {
-      this.getRecipes();
-    }, 1000);
+    this.recipeswiperService.loadRecipes(this.groupToken).subscribe({
+      next: () => {
+        this.getRecipes();
+      },
+    });
   }
 
   getRecipes() {

@@ -1,28 +1,35 @@
 package ch.janishuber.recipeswiper.adapter.rest;
 
+import ch.janishuber.recipeswiper.adapter.mealdb.RecipeApi;
 import ch.janishuber.recipeswiper.adapter.persistence.*;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.GroupEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.UserEntity;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RecipeResult;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestCreateUser;
 import ch.janishuber.recipeswiper.adapter.rest.dto.RequestJoin;
-
-import java.util.*;
-
 import ch.janishuber.recipeswiper.adapter.rest.dto.VoteRequest;
+import ch.janishuber.recipeswiper.application.RecipeService;
 import ch.janishuber.recipeswiper.domain.*;
-import ch.janishuber.recipeswiper.domain.testing.ApiRecipeGenerator;
+import ch.janishuber.recipeswiper.domain.api.Tags;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 @Path("/recipeswiper")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RecipeSwiperResource {
 
+    @Inject
+    RecipeService recipeService;
+    @Inject
+    private RecipeApi recipeApi;
     @Inject
     private RecipeRepository recipeRepository;
     @Inject
@@ -39,6 +46,17 @@ public class RecipeSwiperResource {
     public Response newRecipe(Recipe recipe) {
         recipeRepository.save(recipe);
         return Response.ok("Recipe saved").build();
+    }
+
+    @GET
+    @Path("/recipes/{recipeId}")
+    public Response getRecipe(@PathParam("recipeId") int recipeId) {
+        Optional<Recipe> recipe = recipeRepository.getRecipe(recipeId);
+        if (recipe.isPresent()) {
+            return Response.ok(recipe.get()).build();
+        } else {
+            return Response.status(Response.Status.NOT_FOUND).entity("Recipe not found").build();
+        }
     }
 
     @POST
@@ -91,14 +109,10 @@ public class RecipeSwiperResource {
     @GET
     @Path("/{groupToken}/load/recipes")
     public Response loadRecipes(@PathParam("groupToken") String groupToken) {
-        ApiRecipeGenerator apiRecipeGenerator = new ApiRecipeGenerator();
-        apiRecipeGenerator.getRandomRecipe(5).forEach(recipe -> {
-            int recipeId = 0;
-            try {
-                recipeId = recipeRepository.save(recipe);
-            } catch (IllegalStateException e) {
-                recipeId = Integer.parseInt(e.getMessage());
-            }
+        List<Tags> tags = ResultHelpers.getFavoriteCategories(groupToken, groupRecipesRepository, recipeVotesRepository);
+        recipeApi.getRecipesByTags(tags).forEach(recipe -> {
+            int recipeId;
+            recipeId = recipeService.save(recipe);
             groupRecipesRepository.addRecipeToGroup(recipeId, groupToken);
         });
         return Response.ok("Recipes loaded into group").build();
@@ -126,7 +140,7 @@ public class RecipeSwiperResource {
     @GET
     @Path("/groups/{groupToken}/{userToken}/get/recipes")
     public Response getRecipesByGroup(@PathParam("groupToken") String groupToken,
-            @PathParam("userToken") String userToken) {
+                                      @PathParam("userToken") String userToken) {
         List<Recipe> recipes = groupRecipesRepository.getAllRecipesForUser(groupToken, userToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
@@ -180,24 +194,5 @@ public class RecipeSwiperResource {
         } else {
             return Response.status(Response.Status.NOT_FOUND).entity("Group not found").build();
         }
-    }
-
-    // Health check endpoint for Render
-    @GET
-    @Path("/health")
-    @Produces(MediaType.TEXT_PLAIN)
-    public Response healthCheck() {
-        return Response.ok("OK").build();
-    }
-
-    // OPTIONS für CORS-Preflight
-    @OPTIONS
-    @Path("{path:.*}")
-    public Response handlePreflight() {
-        return Response.ok()
-                .header("Access-Control-Allow-Origin", "*")
-                .header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-                .header("Access-Control-Allow-Headers", "Content-Type, Authorization")
-                .build();
     }
 }

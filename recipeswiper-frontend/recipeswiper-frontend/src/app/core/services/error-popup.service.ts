@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
+
 export class ErrorPopupService {
   private messageSubject = new Subject<string>();
   message$ = this.messageSubject.asObservable();

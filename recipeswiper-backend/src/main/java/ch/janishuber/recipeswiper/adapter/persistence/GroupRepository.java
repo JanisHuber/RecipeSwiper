@@ -1,8 +1,8 @@
 package ch.janishuber.recipeswiper.adapter.persistence;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserToGroupEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.GroupEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.UserEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.UserToGroupEntity;
 import ch.janishuber.recipeswiper.domain.Group;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -61,10 +61,10 @@ public class GroupRepository {
 
     public List<Group> getAllGroupsForUser(int userId) {
         return em.createQuery("""
-                SELECT g FROM GroupEntity g
-                JOIN UserToGroupEntity utg ON g.id = utg.group_id
-                WHERE utg.user_id = :userId
-                """, GroupEntity.class)
+                        SELECT g FROM GroupEntity g
+                        JOIN UserToGroupEntity utg ON g.id = utg.group_id
+                        WHERE utg.user_id = :userId
+                        """, GroupEntity.class)
                 .setParameter("userId", userId)
                 .getResultList()
                 .stream()
@@ -74,9 +74,9 @@ public class GroupRepository {
 
     private boolean isUserAlreadyInGroup(int userId, int groupId) {
         Long count = em.createQuery("""
-                SELECT COUNT(utg) FROM UserToGroupEntity utg
-                WHERE utg.user_id = :userId AND utg.group_id = :groupId
-                """, Long.class)
+                        SELECT COUNT(utg) FROM UserToGroupEntity utg
+                        WHERE utg.user_id = :userId AND utg.group_id = :groupId
+                        """, Long.class)
                 .setParameter("userId", userId)
                 .setParameter("groupId", groupId)
                 .getSingleResult();

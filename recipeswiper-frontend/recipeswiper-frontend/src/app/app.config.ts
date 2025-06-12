@@ -24,7 +24,6 @@ export const appConfig: ApplicationConfig = {
         if (token) {
           recipeswiperService.getUser(token).subscribe(async (user) => {
             await userService.setUser(user);
-            //router.navigate([`/recipeswiper/home`]);
             resolve();
           });
         } else {

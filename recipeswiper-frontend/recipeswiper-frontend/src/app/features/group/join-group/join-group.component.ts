@@ -2,9 +2,8 @@ import { Component } from '@angular/core';
 import { RecipeswiperService } from '../../../core/services/recipeswiper.service';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { catchError } from 'rxjs/operators';
 import { ErrorPopupService } from '../../../core/services/error-popup.service';
-import { throwError } from 'rxjs';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,10 +15,16 @@ import { throwError } from 'rxjs';
 export class JoinGroupComponent {
   groupCode: string = '';
 
-  constructor(private recipeswiperService: RecipeswiperService, private errorPopupService: ErrorPopupService) {}
+  constructor(private recipeswiperService: RecipeswiperService, private errorPopupService: ErrorPopupService, private router: Router) {}
 
   joinGroup() {
-    // TODO: Catch error
-    this.recipeswiperService.joinGroup(this.groupCode);
+    this.recipeswiperService.joinGroup(this.groupCode).subscribe({
+      next: (response) => {
+        this.router.navigate([`/recipeswiper/recipe/${this.groupCode}`]);
+      },
+      error: (error) => {
+        this.errorPopupService.showError(error.message);
+      },
+    });
   }
 }

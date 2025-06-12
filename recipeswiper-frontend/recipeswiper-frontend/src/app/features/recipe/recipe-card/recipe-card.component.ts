@@ -5,8 +5,8 @@ import { Recipe } from '../../../core/models/Recipe';
   selector: 'app-recipe-card',
   standalone: true,
   templateUrl: './recipe-card.component.html',
-  styleUrl: './recipe-card.component.css'
+  styleUrl: './recipe-card.component.css',
 })
 export class RecipeCardComponent {
-  @Input() recipe!: Recipe ;
+  @Input() recipe!: Recipe;
 }

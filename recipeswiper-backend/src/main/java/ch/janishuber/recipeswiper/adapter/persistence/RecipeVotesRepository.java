@@ -1,7 +1,7 @@
 package ch.janishuber.recipeswiper.adapter.persistence;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.RecipeVotesEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.VoteType;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.RecipeVotesEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.VoteType;
 import ch.janishuber.recipeswiper.domain.VoteResult;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -32,8 +32,8 @@ public class RecipeVotesRepository {
     public List<VoteResult> getRecipeVoteFromGroup(int groupId, int recipeId) {
         try {
             List<RecipeVotesEntity> r = em.createQuery(
-                    "SELECT r FROM RecipeVotesEntity r WHERE r.group_id = :groupId AND r.recipe_id = :recipeId",
-                    RecipeVotesEntity.class)
+                            "SELECT r FROM RecipeVotesEntity r WHERE r.group_id = :groupId AND r.recipe_id = :recipeId",
+                            RecipeVotesEntity.class)
                     .setParameter("groupId", groupId)
                     .setParameter("recipeId", recipeId)
                     .getResultList();
@@ -52,9 +52,9 @@ public class RecipeVotesRepository {
 
     private boolean hasUserAlreadyVoted(int recipeId, int userId, int groupId) {
         return em.createQuery(
-                "SELECT COUNT(v) FROM RecipeVotesEntity v " +
-                        "WHERE v.recipe_id = :recipeId AND v.user_id = :userId AND v.group_id = :groupId",
-                Long.class)
+                        "SELECT COUNT(v) FROM RecipeVotesEntity v " +
+                                "WHERE v.recipe_id = :recipeId AND v.user_id = :userId AND v.group_id = :groupId",
+                        Long.class)
                 .setParameter("recipeId", recipeId)
                 .setParameter("userId", userId)
                 .setParameter("groupId", groupId)

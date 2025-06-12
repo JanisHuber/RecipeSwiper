@@ -16,54 +16,40 @@
         <feature>enterpriseBeansLite-4.0</feature>
     </featureManager>
 
-    <!-- Dynamic port configuration for Render -->
-    <variable name="default.http.port" defaultValue="9090"/>
-    <variable name="default.https.port" defaultValue="9443"/>
-
-    <!-- HTTP Endpoint with dynamic port from environment -->
     <httpEndpoint id="defaultHttpEndpoint"
-                  httpPort="${env.PORT}"
-                  httpsPort="${default.https.port}"
-                  host="*" />
+                  httpPort="9090"
+                  httpsPort="9443" />
 
-    <!-- CORS configuration -->
     <httpDispatcher>
         <cors enabled="true"
               domain="*"
               allowCredentials="true"
               allowedMethods="GET,POST,PUT,DELETE,OPTIONS"
-              allowedHeaders="*"
+              allowedHeaders="origin, content-type, accept, authorization"
               maxAge="3600"/>
     </httpDispatcher>
 
-    <!-- Automatically expand WAR files -->
+    <!-- Automatically expand WAR files and EAR files -->
     <applicationManager autoExpand="true"/>
 
-    <!-- Application configuration -->
-    <webApplication contextRoot="/" location="recipeswiper.war">
-        <classloader commonLibraryRef="mariadbLib"/>
-    </webApplication>
+    <!-- Configures the application on a specified context root -->
+    <webApplication contextRoot="/" location="recipeswiper.war" />
 
-    <!-- SSL configuration -->
+    <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true" />
 
-    <!-- Database configuration -->
-    <dataSource id="MariaDBDS" jndiName="jdbc/recipeswiper">
-        <jdbcDriver libraryRef="mariadbLib"/>
-        <properties
-                serverName="recipeswiper-db"
-                portNumber="3306"
-                databaseName="recipeswiper"
-                user="appuser"
-                password="apppass" />
+    <dataSource id="recipeswiper" jndiName="jdbc/recipeswiper">
+        <jdbcDriver libraryRef="mariadb" javax.sql.DataSource="org.mariadb.jdbc.MariaDbDataSource"
+                    javax.sql.XADataSource="org.mariadb.jdbc.MariaDbDataSource"
+                    javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MariaDbDataSource"/>
+
+        <properties url="jdbc:mariadb://localhost:3306/recipeswiper"
+                    user="root"
+                    password="1234"/>
     </dataSource>
 
-    <!-- MariaDB library -->
-    <library id="mariadbLib">
+    <library id="mariadb">
         <fileset dir="${shared.resource.dir}/" includes="mariadb-java-client-*.jar"/>
     </library>
-
-    <!-- Logging configuration for production -->
-    <logging traceSpecification="*=info" maxFileSize="20" maxFiles="5"/>
 
 </server>

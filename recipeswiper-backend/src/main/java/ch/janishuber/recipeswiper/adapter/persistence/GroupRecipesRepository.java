@@ -1,7 +1,7 @@
 package ch.janishuber.recipeswiper.adapter.persistence;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.GroupRecipesEntity;
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.RecipeEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.GroupRecipesEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.RecipeEntity;
 import ch.janishuber.recipeswiper.domain.Recipe;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
@@ -30,15 +30,15 @@ public class GroupRecipesRepository {
 
     public List<Recipe> getAllRecipesForUser(int groupId, int userId) {
         List<RecipeEntity> recipeEntities = em.createQuery("""
-                            SELECT r FROM RecipeEntity r
-                            JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
-                            WHERE gr.group_id = :groupId
-                            AND r.id NOT IN (
-                                SELECT rv.recipe_id
-                                FROM RecipeVotesEntity rv
-                                WHERE rv.user_id = :userId AND rv.group_id = :groupId
-                            )
-                            """, RecipeEntity.class)
+                        SELECT r FROM RecipeEntity r
+                        JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
+                        WHERE gr.group_id = :groupId
+                        AND r.id NOT IN (
+                            SELECT rv.recipe_id
+                            FROM RecipeVotesEntity rv
+                            WHERE rv.user_id = :userId AND rv.group_id = :groupId
+                        )
+                        """, RecipeEntity.class)
                 .setParameter("groupId", groupId)
                 .setParameter("userId", userId)
                 .getResultList();
@@ -60,10 +60,10 @@ public class GroupRecipesRepository {
 
     public List<Recipe> getAllRecipes(int groupId) {
         List<RecipeEntity> recipeEntities = em.createQuery("""
-                            SELECT r FROM RecipeEntity r
-                            JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
-                            WHERE gr.group_id = :groupId
-                            """, RecipeEntity.class)
+                        SELECT r FROM RecipeEntity r
+                        JOIN GroupRecipesEntity gr ON r.id = gr.recipe_id
+                        WHERE gr.group_id = :groupId
+                        """, RecipeEntity.class)
                 .setParameter("groupId", groupId)
                 .getResultList();
 

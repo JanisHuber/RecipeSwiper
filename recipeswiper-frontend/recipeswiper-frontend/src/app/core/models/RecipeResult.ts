@@ -1,11 +1,11 @@
 import { VoteResult } from "./VoteResult";
 
 export interface RecipeResult {
-    id: number;
+    recipeId: number;
     title: string;
     description: string;
     ingredients: string;
-    instructions: string[];
-    imageUrl: string;
-    voteResult: VoteResult;
+    instructions: string;
+    image_url: string;
+    voteResults: VoteResult;
 }

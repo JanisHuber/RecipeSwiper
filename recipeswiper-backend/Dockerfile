@@ -1,48 +1,17 @@
+# Verwende Open Liberty mit Java 21 & OpenJ9 – schlankes Image
 FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9-ubi-minimal
 
-# Copy Liberty server configuration first
-COPY --chown=1001:0 src/main/liberty/config/server.xml /config/
+# Kopiere Liberty-Konfiguration (z. B. server.xml)
+COPY --chown=1001:0 src/main/liberty/config/ /config/
 
-# Install the required features based on server.xml
+# Optional: JDBC-Treiber für MariaDB hinzufügen, falls nötig
+# COPY --chown=1001:0 libs/mariadb-java-client.jar /config/resources/
+
+# Installiere alle Features, die in server.xml benötigt werden (wird ausgelesen)
 RUN features.sh
 
-# Copy rest of application files and build
-COPY --chown=1001:0 src/ /config/
-COPY --chown=1001:0 pom.xml /config/
+# WAR-Datei ins dropins-Verzeichnis kopieren (wird automatisch deployed)
+COPY --chown=1001:0 target/*.war /config/dropins/
 
-# Set working directory
-WORKDIR /config
-
-# Install Maven and build the application
-USER root
-RUN microdnf install -y maven && microdnf clean all
-
-# Download MariaDB JDBC driver
-RUN mkdir -p /opt/ol/wlp/usr/shared/resources && \
-    curl -o /opt/ol/wlp/usr/shared/resources/mariadb-java-client-3.3.3.jar \
-    https://repo1.maven.org/maven2/org/mariadb/jdbc/mariadb-java-client/3.3.3/mariadb-java-client-3.3.3.jar
-
-# Build the application with minimal features
-RUN mvn clean package -DskipTests && \
-    cp target/recipeswiper.war /config/apps/ && \
-    rm -rf target/ src/ pom.xml ~/.m2
-
-# Switch back to Liberty user
-USER 1001
-
-# Configure Liberty for low memory usage
-RUN echo "-Xmx256m" >> /config/jvm.options && \
-    echo "-Xms128m" >> /config/jvm.options && \
-    echo "-Xtune:virtualized" >> /config/jvm.options && \
-    echo "-XX:+UseContainerSupport" >> /config/jvm.options
-
-# Run configure script to optimize runtime
-RUN configure.sh
-
-# Set default PORT if not provided (Render default is 10000)
-ENV PORT=10000
-
-# Expose the port that will be set by Render
-EXPOSE $PORT
-
-CMD ["/opt/ol/wlp/bin/server", "run", "defaultServer"]
+# Port für HTTP (Standard bei Liberty)
+EXPOSE 9080

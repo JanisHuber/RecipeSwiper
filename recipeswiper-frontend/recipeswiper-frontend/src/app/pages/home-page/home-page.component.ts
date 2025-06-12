@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { User } from '../../core/models/dto/user';
+import { User } from '../../core/models/dto/User';
 import { Group } from '../../core/models/dto/Group';
 import { RecipeswiperService } from '../../core/services/recipeswiper.service';
 import { GroupListComponent } from '../../features/group/group-list/group-list.component';
 import { Recipe } from '../../core/models/Recipe';
 import { BrowseRecipeListComponent } from '../../features/recipe/browse-recipe-list/browse-recipe-list.component';
-
 
 @Component({
   selector: 'app-home-page',
@@ -40,10 +39,8 @@ export class HomePageComponent implements OnInit {
         this.groups = groups;
       });
 
-    this.recipeswiperService
-      .getAllRecipes()
-      .subscribe((recipes: Recipe[]) => {
-        this.recipes = recipes;
-      });
+    this.recipeswiperService.getAllRecipes().subscribe((recipes: Recipe[]) => {
+      this.recipes = recipes;
+    });
   }
 }

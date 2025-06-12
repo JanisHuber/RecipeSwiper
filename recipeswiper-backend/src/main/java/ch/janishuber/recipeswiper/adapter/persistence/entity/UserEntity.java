@@ -1,4 +1,4 @@
-package ch.janishuber.recipeswiper.adapter.persistence.Entity;
+package ch.janishuber.recipeswiper.adapter.persistence.entity;
 
 import jakarta.persistence.*;
 

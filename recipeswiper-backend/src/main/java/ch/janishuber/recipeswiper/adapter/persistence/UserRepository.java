@@ -1,12 +1,13 @@
 package ch.janishuber.recipeswiper.adapter.persistence;
 
-import ch.janishuber.recipeswiper.adapter.persistence.Entity.UserEntity;
+import ch.janishuber.recipeswiper.adapter.persistence.entity.UserEntity;
 import ch.janishuber.recipeswiper.domain.User;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+
 import java.util.Optional;
 
 @RequestScoped

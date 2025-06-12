@@ -10,11 +10,11 @@ services:
     # Environment variables
     envVars:
       - key: DATABASE_URL
-        value: jdbc:mariadb://your-db-host:3306/recipeswiper
+        value: jdbc:mariadb://recipeswiper-db:3306/recipeswiper
       - key: DB_USER
-        value: your-db-user
+        value: appuser
       - key: DB_PASSWORD
-        value: your-db-password
+        value: apppass
       - key: JAVA_OPTS
         value: "-Xmx256m -Xms128m -XX:+UseContainerSupport"
 

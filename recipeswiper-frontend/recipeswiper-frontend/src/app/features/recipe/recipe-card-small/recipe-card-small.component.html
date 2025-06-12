@@ -8,7 +8,7 @@
       <p class="text-sm text-gray-500">{{ recipe.ingredients }}</p>
     </div>
     <button
-      (click)="viewRecipe()"
+      (click)="viewRecipe(recipe.recipeId)"
       class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded-lg transition-colors m-3"
     >
       Details

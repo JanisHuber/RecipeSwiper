@@ -14,6 +14,7 @@ export class CreateGroupComponent {
   constructor(private recipeswiperService: RecipeswiperService) {}
 
   createGroup() {
+    console.log(this.groupName);
     if (!this.groupName) return;
     this.recipeswiperService.createGroup(this.groupName);
   }
