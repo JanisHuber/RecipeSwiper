@@ -1,0 +1,44 @@
+services:
+  db:
+    image: mariadb:10.6
+    restart: always
+    environment:
+      MARIADB_ROOT_PASSWORD: root123
+      MARIADB_DATABASE: recipeswiper
+      MARIADB_USER: recipeuser
+      MARIADB_PASSWORD: recipe123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./recipeswiper-database:/docker-entrypoint-initdb.d
+    # optional: give it a healthcheck so that “depends_on” can wait
+    healthcheck:
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "3306:3306"
+
+  backend:
+    build: ./recipeswiper-backend
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "9080:9080"
+    environment:
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  frontend:
+    build: ./recipeswiper-frontend/recipeswiper-frontend
+    depends_on:
+      - backend
+    ports:
+      - "4200:80"
+
+volumes:
+  db_data:
