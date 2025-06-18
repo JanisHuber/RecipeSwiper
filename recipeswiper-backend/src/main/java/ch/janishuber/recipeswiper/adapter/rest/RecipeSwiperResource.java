@@ -130,7 +130,9 @@ public class RecipeSwiperResource {
         for (Recipe recipe : recipes) {
             List<VoteResult> voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
             RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
-            results.add(recipeResult);
+            if (!recipeResult.voteResults().isEmpty()) {
+                results.add(recipeResult);
+            }
         }
 
         List<RecipeResult> sortedResults = ResultHelpers.sortMatchesFromResults(results);

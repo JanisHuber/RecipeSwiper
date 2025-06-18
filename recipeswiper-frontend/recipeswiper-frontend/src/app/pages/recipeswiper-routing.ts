@@ -5,6 +5,8 @@ import { GroupPageComponent } from './group-page/group-page.component';
 import { UserPageComponent } from './user-page/user-page.component';
 import { AuthGuard } from '../core/guards/auth.guard';
 import { RecipeViewComponent } from './recipe-view/recipe-view.component';
+import { NewRecipeComponent } from '../features/recipe/new-recipe/new-recipe.component';
+
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -21,6 +23,7 @@ export const routes: Routes = [
   },
   { path: 'recipe/view/:recipeId', component: RecipeViewComponent },
   { path: 'user', component: UserPageComponent },
+  { path: 'new/recipe', component: NewRecipeComponent, canActivate: [AuthGuard] },
   { path: '**', redirectTo: 'home' },
 ];
 

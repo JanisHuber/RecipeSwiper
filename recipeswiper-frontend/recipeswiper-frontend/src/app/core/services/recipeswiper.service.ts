@@ -28,6 +28,13 @@ export class RecipeswiperService {
     private router: Router
   ) {}
 
+  createRecipe(recipe: Recipe): Observable<String> {
+    return this.http.post<String>(`${this.apiUrl}/new/recipe`, recipe, {
+      ...this.httpOptions,
+      responseType: 'text' as 'json',
+    });
+  }
+
   createUser(username: string): Observable<User> {
     const request: RequestCreateUser = { username: username };
     return this.http

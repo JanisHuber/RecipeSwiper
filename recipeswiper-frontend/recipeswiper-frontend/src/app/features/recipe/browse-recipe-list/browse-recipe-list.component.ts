@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { Recipe } from '../../../core/models/Recipe';
 import { RecipeCardSmallComponent } from '../recipe-card-small/recipe-card-small.component';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -14,7 +15,13 @@ export class BrowseRecipeListComponent {
 
   public numberOfShowedRecipes = 3;
 
+  constructor(private router: Router) {}
+
   public showMoreRecipes() {
     this.numberOfShowedRecipes += 3;
+  }
+
+  public navigateToNewRecipe() {
+    this.router.navigate(['/recipeswiper/new/recipe']);
   }
 }
