@@ -76,4 +76,8 @@ export class HeaderComponent implements OnInit {
   navigateToProfile() {
     this.router.navigate([`/recipeswiper/user`]);
   }
+
+  navigateToHome() {
+    this.router.navigate([`/recipeswiper/home`]);
+  }
 }

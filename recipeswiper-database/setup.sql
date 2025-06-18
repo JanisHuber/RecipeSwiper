@@ -2,7 +2,7 @@ USE recipeswiper;
 
 DROP TABLE IF EXISTS recipesToGroup;
 DROP TABLE IF EXISTS selectedRecipes;
-DROP TABLE IF EXISTS userToGroup;
+DROP TABLE IF EXISTS user_to_group;
 DROP TABLE IF EXISTS recipe_votes;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS group_recipes;
@@ -23,7 +23,7 @@ CREATE TABLE users
     user_token VARCHAR(255) NOT NULL UNIQUE
 );
 
-CREATE TABLE userToGroup
+CREATE TABLE user_to_group
 (
     id       INT AUTO_INCREMENT PRIMARY KEY,
     user_id  INT NOT NULL,
@@ -54,10 +54,10 @@ CREATE TABLE group_recipes
 CREATE TABLE recipe_votes
 (
     id        INT AUTO_INCREMENT PRIMARY KEY,
-    user_id   INT                      NOT NULL,
-    recipe_id INT                      NOT NULL,
-    group_id  INT                      NOT NULL,
-    vote      VARCHAR (10) NOT NULL,
+    user_id   INT         NOT NULL,
+    recipe_id INT         NOT NULL,
+    group_id  INT         NOT NULL,
+    vote      VARCHAR(10) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (recipe_id) REFERENCES recipes (id),
     FOREIGN KEY (group_id) REFERENCES `groups` (id)

@@ -37,23 +37,25 @@ export class AppComponent implements OnInit {
         this.currentUser = user;
       });
 
-    this.router.events.subscribe(() => {
-      this.recipeswiperService
-        .getGroups(this.currentUser?.userToken || '')
-        .subscribe((groups) => (this.groups = groups));
-
-      const url = this.router.url;
-      const match =
-        url.match(/recipe\/swipe\/([^/]+)/) || url.match(/group\/([^/]+)/);
-      if (match) {
-        this.showGroup = true;
-        const groupToken = match[1];
+    if (this.currentUser) {
+      this.router.events.subscribe(() => {
         this.recipeswiperService
-          .getGroupName(groupToken)
-          .subscribe((group) => (this.groupName = group.name));
-      } else {
-        this.showGroup = false;
-      }
-    });
+          .getGroups(this.currentUser?.userToken || '')
+          .subscribe((groups) => (this.groups = groups));
+
+        const url = this.router.url;
+        const match =
+          url.match(/recipe\/swipe\/([^/]+)/) || url.match(/group\/([^/]+)/);
+        if (match) {
+          this.showGroup = true;
+          const groupToken = match[1];
+          this.recipeswiperService
+            .getGroupName(groupToken)
+            .subscribe((group) => (this.groupName = group.name));
+        } else {
+          this.showGroup = false;
+        }
+      });
+  }
   }
 }

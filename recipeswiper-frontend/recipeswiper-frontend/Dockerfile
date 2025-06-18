@@ -14,17 +14,17 @@ COPY . .
 # Build Angular app in production mode
 RUN npm run build --prod
 
-# Serve stage
+# Serve Stage
 FROM nginx:alpine
 
-# Remove default nginx static files
+# Default-HTML löschen
 RUN rm -rf /usr/share/nginx/html/*
 
-# Copy built app to Nginx's web root
-COPY --from=builder /app/dist/recipeswiper-frontend /usr/share/nginx/html
+# App-Build kopieren
+COPY --from=builder /app/dist/recipeswiper-frontend/browser /usr/share/nginx/html
 
-# Expose port 80
+# Eigene Nginx-Config kopieren und überschreiben
+COPY default.conf /etc/nginx/conf.d/default.conf
+
 EXPOSE 80
-
-# Start Nginx
 CMD ["nginx", "-g", "daemon off;"]

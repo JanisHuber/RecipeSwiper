@@ -3,7 +3,7 @@ package ch.janishuber.recipeswiper.adapter.persistence.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "usertogroup")
+@Table(name = "user_to_group")
 public class UserToGroupEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

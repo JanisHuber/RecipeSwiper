@@ -47,8 +47,12 @@ public class UserRepository {
     }
 
     private int convertTokenToUserId(String userToken) {
-        return em.createQuery("SELECT u.id FROM UserEntity u WHERE u.user_token = :token", Integer.class)
-                .setParameter("token", userToken)
-                .getSingleResult();
+        try {
+            return em.createQuery("SELECT u.id FROM UserEntity u WHERE u.user_token = :token", Integer.class)
+                    .setParameter("token", userToken)
+                    .getSingleResult();
+        } catch (NoResultException e) {
+            return 0;
+        }
     }
 }

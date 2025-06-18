@@ -22,9 +22,17 @@ export const appConfig: ApplicationConfig = {
       return new Promise<void>((resolve) => {
         const token = localStorage.getItem('userToken');
         if (token) {
-          recipeswiperService.getUser(token).subscribe(async (user) => {
-            await userService.setUser(user);
-            resolve();
+          recipeswiperService.getUser(token).subscribe({
+            next: async (user) => {
+              await userService.setUser(user);
+              resolve();
+            },
+            error: (error) => {
+              if (error.message === 'User not found') {
+                router.navigate(['/recipeswiper/user']);
+              }
+              resolve();
+            }
           });
         } else {
           router.navigate([`/recipeswiper/user`]);
