@@ -9,7 +9,7 @@ COPY tsconfig*.json ./
 COPY angular.json ./
 COPY tailwind.config.js ./
 
-RUN npm ci --only=production=false
+RUN npm ci
 
 # Copy source code
 COPY src/ ./src/
