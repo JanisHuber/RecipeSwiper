@@ -1,0 +1,6 @@
+name: buildDockerImage
+
+on: push
+jobs:
+  name: checkoutCode
+  steps: 
