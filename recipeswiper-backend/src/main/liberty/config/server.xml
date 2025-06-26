@@ -51,4 +51,6 @@
     <library id="mariadb">
         <fileset dir="resources" includes="mariadb-java-client-*.jar"/>
     </library>
+
+    <logging consoleLogLevel="INFO" traceSpecification="*=info"/>
 </server>

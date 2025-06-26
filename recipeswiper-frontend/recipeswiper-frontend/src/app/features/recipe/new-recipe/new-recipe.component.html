@@ -45,7 +45,6 @@
                 </div>
             </div>
 
-            <!-- Image URL -->
             <div class="space-y-2">
                 <label for="imageUrl" class="block text-sm font-semibold text-gray-700">
                     Image URL (optional)
@@ -73,7 +72,7 @@
                     [class]="recipeForm.get('tag')?.invalid && recipeForm.get('tag')?.touched ? 'border-red-500 focus:ring-red-500' : ''">
                     <option value="" disabled class="text-gray-500">Select a category...</option>
                     <option *ngFor="let tag of tags" [value]="tag" class="text-gray-900">
-                        {{ getTagDisplayName(tag) }}
+                        {{ tag }}
                     </option>
                 </select>
                 <div *ngIf="recipeForm.get('tag')?.invalid && recipeForm.get('tag')?.touched"

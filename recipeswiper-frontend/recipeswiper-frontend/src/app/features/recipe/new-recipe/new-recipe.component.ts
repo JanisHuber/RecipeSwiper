@@ -10,20 +10,20 @@ import { Recipe } from '../../../core/models/Recipe';
 import { RecipeswiperService } from '../../../core/services/recipeswiper.service';
 
 export enum Tags {
-  BEEF = 'BEEF',
-  CHICKEN = 'CHICKEN',
-  DESSERT = 'DESSERT',
-  LAMB = 'LAMB',
-  MISCELLANEOUS = 'MISCELLANEOUS',
-  PASTA = 'PASTA',
-  PORK = 'PORK',
-  SEAFOOD = 'SEAFOOD',
-  SIDE = 'SIDE',
-  STARTER = 'STARTER',
-  VEGAN = 'VEGAN',
-  VEGETARIAN = 'VEGETARIAN',
-  BREAKFAST = 'BREAKFAST',
-  GOAT = 'GOAT',
+  BEEF = 'Beef',
+  CHICKEN = 'Chicken',
+  DESSERT = 'Dessert',
+  LAMB = 'Lamb',
+  MISCELLANEOUS = 'Miscellaneous',
+  PASTA = 'Pasta',
+  PORK = 'Pork',
+  SEAFOOD = 'Seafood',
+  SIDE = 'Side',
+  STARTER = 'Starter',
+  VEGAN = 'Vegan',
+  VEGETARIAN = 'Vegetarian',
+  BREAKFAST = 'Breakfast',
+  GOAT = 'Goat',
 }
 
 @Component({
@@ -74,41 +74,6 @@ export class NewRecipeComponent {
       });
     } else {
       alert('Please fill in all fields correctly.');
-    }
-  }
-
-  getTagDisplayName(tag: string): string {
-    switch (tag) {
-      case 'BEEF':
-        return 'Beef';
-      case 'CHICKEN':
-        return 'Chicken';
-      case 'DESSERT':
-        return 'Dessert';
-      case 'LAMB':
-        return 'Lamb';
-      case 'MISCELLANEOUS':
-        return 'Miscellaneous';
-      case 'PASTA':
-        return 'Pasta';
-      case 'PORK':
-        return 'Pork';
-      case 'SEAFOOD':
-        return 'Seafood';
-      case 'SIDE':
-        return 'Side';
-      case 'STARTER':
-        return 'Starter';
-      case 'VEGAN':
-        return 'Vegan';
-      case 'VEGETARIAN':
-        return 'Vegetarian';
-      case 'BREAKFAST':
-        return 'Breakfast';
-      case 'GOAT':
-        return 'Goat';
-      default:
-        return tag;
     }
   }
 }

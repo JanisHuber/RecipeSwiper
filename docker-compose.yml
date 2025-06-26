@@ -10,7 +10,6 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./recipeswiper-database:/docker-entrypoint-initdb.d
-    # optional: give it a healthcheck so that “depends_on” can wait
     healthcheck:
       test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       interval: 10s

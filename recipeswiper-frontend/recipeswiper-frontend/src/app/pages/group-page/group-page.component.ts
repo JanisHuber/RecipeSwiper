@@ -29,6 +29,7 @@ export class GroupPageComponent {
   ngOnInit() {
     this.groupToken = this.route.snapshot.params['groupToken'];
     if (this.groupToken) {
+      console.log('fetching group results')
       this.recipeswiperService
         .getResultRecipes(this.groupToken)
         .subscribe((recipes) => {

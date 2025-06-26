@@ -20,11 +20,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.logging.Logger;
+
 
 @Path("/recipeswiper")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class RecipeSwiperResource {
+    private static final Logger LOGGER = Logger.getLogger(RecipeSwiperResource.class.getName());
 
     @Inject
     RecipeService recipeService;
@@ -121,6 +124,7 @@ public class RecipeSwiperResource {
     @GET
     @Path("/groups/{groupToken}/get/results")
     public Response getRecipes(@PathParam("groupToken") String groupToken) {
+        LOGGER.info("fetching results for group: " + groupToken);
         List<Recipe> recipes = groupRecipesRepository.getAllRecipes(groupToken);
         if (recipes.isEmpty()) {
             return Response.status(Response.Status.NOT_FOUND).entity("No recipes found").build();
@@ -129,10 +133,13 @@ public class RecipeSwiperResource {
         List<RecipeResult> results = new ArrayList<>();
         for (Recipe recipe : recipes) {
             List<VoteResult> voteOfRecipe = recipeVotesRepository.getRecipeVoteFromGroup(groupToken, recipe.recipeId());
-            RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
-            if (!recipeResult.voteResults().isEmpty()) {
-                results.add(recipeResult);
+            System.out.println("Votes for recipe " + recipe.title() + ": " + voteOfRecipe);
+            if (voteOfRecipe.isEmpty()) {
+                System.out.println("Recipe got skipped due to no votes");
+                continue;
             }
+            RecipeResult recipeResult = RecipeResult.ofRecipe(recipe, voteOfRecipe);
+            results.add(recipeResult);
         }
 
         List<RecipeResult> sortedResults = ResultHelpers.sortMatchesFromResults(results);

@@ -51,8 +51,6 @@ public class MealDbRecipe implements RecipeApi {
     }
 
     private static List<Tags> reduceTagListWithProportionalFrequency(List<Tags> tags) {
-        System.out.println("Start: " + tags);
-
         Map<Tags, Integer> counts = new HashMap<>();
         for (Tags tag : tags) {
             counts.put(tag, counts.getOrDefault(tag, 0) + 1);
@@ -73,7 +71,6 @@ public class MealDbRecipe implements RecipeApi {
             reducedList.add(weightedPool.get(i));
         }
 
-        System.out.println("Result: " + reducedList);
         return reducedList;
     }
 
