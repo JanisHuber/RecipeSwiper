@@ -6,7 +6,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository.lowercase() }}
+  IMAGE_NAME: janishuber/recipeswiper
 
 jobs:
   build-and-push-image:
