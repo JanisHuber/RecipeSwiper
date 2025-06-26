@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build --prod
+RUN ng build --configuration production
 
 # Serve Stage
 FROM nginx:alpine
