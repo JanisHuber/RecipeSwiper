@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderComponent } from './shared/components/header/header.component';
 import { ErrorPopupComponent } from './shared/components/error-popup/error-popup.component';
-import { Group } from './core/models/dto/Group';
+import { Group } from './core/models/dto/group';
 import { RecipeswiperService } from './core/services/recipeswiper.service';
-import { User } from './core/models/dto/User';
+import { User } from './core/models/dto/user';
 import { UserService } from './core/services/user.service';
 import { Router } from '@angular/router';
 
@@ -56,6 +56,6 @@ export class AppComponent implements OnInit {
           this.showGroup = false;
         }
       });
-  }
+    }
   }
 }

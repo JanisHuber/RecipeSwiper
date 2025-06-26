@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { User } from '../../core/models/dto/User';
+import { User } from '../../core/models/dto/user';
 import { UserProfileComponent } from '../../features/user/user-profile/user-profile.component';
 import { CreateUserComponent } from '../../features/user/create-user/create-user.component';
 import { UserService } from '../../core/services/user.service';

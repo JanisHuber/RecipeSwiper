@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../../core/services/user.service';
-import { User } from '../../../core/models/dto/User';
-import { Group } from '../../../core/models/dto/Group';
+import { User } from '../../../core/models/dto/user';
+import { Group } from '../../../core/models/dto/group';
 import { Router } from '@angular/router';
 
 @Component({

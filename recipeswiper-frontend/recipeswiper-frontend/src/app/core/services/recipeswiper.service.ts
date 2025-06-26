@@ -1,8 +1,8 @@
-import { User } from '../models/dto/User';
-import { RequestCreateUser } from '../models/dto/RequestCreateUser';
-import { RequestJoin } from '../models/dto/RequestJoin';
-import { Group } from '../models/dto/Group';
-import { VoteRequest } from '../models/dto/VoteRequest';
+import { User } from '../models/dto/user';
+import { RequestCreateUser } from '../models/dto/request-create-user';
+import { RequestJoin } from '../models/dto/request-join';
+import { Group } from '../models/dto/group';
+import { VoteRequest } from '../models/dto/vote-request';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
