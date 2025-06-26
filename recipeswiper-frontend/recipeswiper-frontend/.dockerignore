@@ -1,11 +1,16 @@
 # Dependencies
 node_modules/
 npm-debug.log*
+yarn-error.log*
 
 # Build outputs
 dist/
 .angular/
 out-tsc/
+
+# Lock files (let npm handle this in container)
+# Remove this line if using npm ci successfully
+# package-lock.json
 
 # IDE files
 .vscode/
