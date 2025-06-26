@@ -3,10 +3,17 @@ FROM node:18 AS builder
 
 WORKDIR /app
 
+# Copy package files first for better caching
 COPY package*.json ./
-RUN npm install
+COPY tsconfig*.json ./
+COPY angular.json ./
+COPY tailwind.config.js ./
 
-COPY . .
+RUN npm ci --only=production=false
+
+# Copy source code
+COPY src/ ./src/
+COPY public/ ./public/
 
 # Nutze npm, damit ng über ./node_modules/.bin/ng ausgeführt wird
 RUN npm run build -- --configuration production
