@@ -6,23 +6,31 @@ WORKDIR /app
 # Install required packages for node-gyp and compilation
 RUN apk add --no-cache python3 make g++
 
-# Copy package files first for better caching
+# Copy all necessary files for build
 COPY package*.json ./
 COPY tsconfig*.json ./
 COPY angular.json ./
 COPY tailwind.config.js ./
 
-# Install dependencies - robust approach for CI/CD
-RUN npm install --frozen-lockfile --no-audit --no-fund || \
-    npm install --no-audit --no-fund
+# Clean npm cache and install dependencies
+RUN npm cache clean --force
 
-# Copy source code
-COPY src/ ./src/
-COPY public/ ./public/
+# Install dependencies with multiple fallback strategies
+RUN npm ci --no-audit --no-fund --prefer-offline || \
+    npm install --no-audit --no-fund --no-optional || \
+    (rm -rf package-lock.json node_modules && npm install --no-audit --no-fund)
 
-# Build with proper memory limits for GitHub Actions
-ENV NODE_OPTIONS="--max-old-space-size=4096"
-RUN npm run build -- --configuration production
+# Copy source code after dependencies are installed
+COPY . .
+
+# Remove any existing build artifacts
+RUN rm -rf dist/ .angular/
+
+# Build with increased memory and timeout
+ENV NODE_OPTIONS="--max-old-space-size=8192"
+ENV NG_CLI_ANALYTICS=false
+RUN timeout 600 npm run build -- --configuration production || \
+    (echo "Build failed, retrying..." && npm run build -- --configuration production)
 
 # Serve stage
 FROM nginx:alpine
