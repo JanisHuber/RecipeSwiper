@@ -4,13 +4,14 @@ FROM node:18 AS builder
 WORKDIR /app
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 
-RUN ng build --configuration production
+# Nutze npm, damit ng über ./node_modules/.bin/ng ausgeführt wird
+RUN npm run build -- --configuration production
 
-# Serve Stage
+# Serve stage
 FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
