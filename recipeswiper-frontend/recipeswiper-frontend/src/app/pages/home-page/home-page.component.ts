@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
-import { User } from '../../core/models/dto/User';
-import { Group } from '../../core/models/dto/Group';
+import { User } from '../../core/models/dto/user';
+import { Group } from '../../core/models/dto/group';
 import { RecipeswiperService } from '../../core/services/recipeswiper.service';
 import { GroupListComponent } from '../../features/group/group-list/group-list.component';
 import { Recipe } from '../../core/models/Recipe';

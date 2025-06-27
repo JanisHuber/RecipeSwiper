@@ -1,16 +1,16 @@
-import { User } from '../models/dto/User';
+import { User } from '../models/dto/user';
+import { RequestCreateUser } from '../models/dto/request-create-user';
+import { RequestJoin } from '../models/dto/request-join';
+import { Group } from '../models/dto/group';
+import { VoteRequest } from '../models/dto/vote-request';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { UserService } from './user.service';
-import { RequestCreateUser } from '../models/dto/RequestCreateUser';
-import { RequestJoin } from '../models/dto/RequestJoin';
-import { Group } from '../models/dto/Group';
 import { Router } from '@angular/router';
 import { Recipe } from '../models/Recipe';
 import { VoteType } from '../models/VoteType';
 import { RecipeResult } from '../models/RecipeResult';
-import { VoteRequest } from '../models/dto/VoteRequest';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
@@ -48,17 +48,16 @@ export class RecipeswiperService {
   }
 
   getUser(userToken: string): Observable<User> {
-    return this.http.get<User>(
-      `${this.apiUrl}/${userToken}/user`,
-      this.httpOptions
-    ).pipe(
-      catchError((error) => {
-        if (error.status === 404) {
-          return throwError(() => new Error('User not found'));
-        }
-        return throwError(() => error);
-      })
-    );
+    return this.http
+      .get<User>(`${this.apiUrl}/${userToken}/user`, this.httpOptions)
+      .pipe(
+        catchError((error) => {
+          if (error.status === 404) {
+            return throwError(() => new Error('User not found'));
+          }
+          return throwError(() => error);
+        })
+      );
   }
 
   joinGroup(groupToken: string): Observable<string> {
