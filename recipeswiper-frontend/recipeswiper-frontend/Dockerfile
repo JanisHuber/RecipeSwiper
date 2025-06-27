@@ -1,38 +1,16 @@
 # Build stage
-FROM node:18-alpine AS builder
+FROM node:18 AS builder
 
 WORKDIR /app
 
-# Install required packages for node-gyp and compilation
-RUN apk add --no-cache python3 make g++
-
-# Copy all necessary files for build
 COPY package*.json ./
-COPY tsconfig*.json ./
-COPY angular.json ./
-COPY tailwind.config.js ./
+RUN npm install
 
-# Clean npm cache and install dependencies
-RUN npm cache clean --force
-
-# Install dependencies with multiple fallback strategies
-RUN npm ci --no-audit --no-fund --prefer-offline || \
-    npm install --no-audit --no-fund --no-optional || \
-    (rm -rf package-lock.json node_modules && npm install --no-audit --no-fund)
-
-# Copy source code after dependencies are installed
 COPY . .
 
-# Remove any existing build artifacts
-RUN rm -rf dist/ .angular/
+RUN npm run build --prod
 
-# Build with increased memory and timeout
-ENV NODE_OPTIONS="--max-old-space-size=8192"
-ENV NG_CLI_ANALYTICS=false
-RUN timeout 600 npm run build -- --configuration production || \
-    (echo "Build failed, retrying..." && npm run build -- --configuration production)
-
-# Serve stage
+# Serve Stage
 FROM nginx:alpine
 
 RUN rm -rf /usr/share/nginx/html/*
