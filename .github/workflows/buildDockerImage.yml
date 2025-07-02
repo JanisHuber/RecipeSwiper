@@ -22,6 +22,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Build WAR file
+        run: mvn clean package --file recipeswiper-backend/pom.xml
+
       - name: Zeige Dateien im Build-Kontext
         run: |
           echo "🗂️ Dateien im Root-Verzeichnis:"
