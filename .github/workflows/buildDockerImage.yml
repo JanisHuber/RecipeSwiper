@@ -48,18 +48,18 @@ jobs:
           files: docker-compose.yml
           push: true
           set: |
-            backend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-backend:latest
-            frontend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-frontend:latest
+            backend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
+            frontend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
 
       - name: Attest backend image
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-backend
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
           subject-digest: ${{ steps.bake.outputs.backend.digest }}
           push-to-registry: tr
       - name: Attest frontend image
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-frontend
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
           subject-digest: ${{ steps.bake.outputs.frontend.digest }}
           push-to-registry: true
