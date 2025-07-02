@@ -54,13 +54,13 @@ jobs:
       - name: Extract image digests from Bake metadata
         id: extract-digests
         run: |
-          cat "${{ steps.bake.outputs.metadata-file }}"
+          echo '${{ steps.bake.outputs.metadata }}' > metadata.json
           
-          BACKEND_DIGEST=$(jq -r '.backend["containerimage.digest"]' "${{ steps.bake.outputs.metadata-file }}")
-          FRONTEND_DIGEST=$(jq -r '.frontend["containerimage.digest"]' "${{ steps.bake.outputs.metadata-file }}")
-
+          BACKEND_DIGEST=$(jq -r '.backend["containerimage.digest"]' metadata.json)
+          FRONTEND_DIGEST=$(jq -r '.frontend["containerimage.digest"]' metadata.json)
+          
           echo "backend_digest=$BACKEND_DIGEST" >> $GITHUB_OUTPUT
-          echo "frontend_digest=$FRONTEND_DIGEST" >> $GITHUB_OUTPUT
+          echo "frontend_digest=$FRONTEND_DIGEST" >> $GITHUB_OUTPUT      
 
       - name: Attest backend image
         uses: actions/attest-build-provenance@v2
