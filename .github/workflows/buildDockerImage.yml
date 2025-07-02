@@ -56,10 +56,11 @@ jobs:
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
           subject-digest: ${{ steps.bake.outputs.backend.digest }}
-          push-to-registry: tr
+          push-to-registry: 'true'
+
       - name: Attest frontend image
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
           subject-digest: ${{ steps.bake.outputs.frontend.digest }}
-          push-to-registry: true
+          push-to-registry: 'true'
