@@ -24,9 +24,9 @@ jobs:
           echo "🗂️ Dateien im Root-Verzeichnis:"
           ls -la
           echo "📁 Dateien im backend-Verzeichnis:"
-          ls -la backend/
+          ls -la recipeswiper-backend/
           echo "📁 Dateien im backend/target-Verzeichnis:"
-          ls -la backend/target || echo "❌ backend/target existiert nicht"
+          ls -la recipe-swiperbackend/target || echo "❌ backend/target existiert nicht"
 
       - name: Checkout repository
         uses: actions/checkout@v4
