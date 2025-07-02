@@ -50,6 +50,12 @@ jobs:
           set: |
             backend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
             frontend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+
+      - name: Dump Bake outputs
+        run: |
+          echo "All outputs:"
+          echo "${{ toJson(steps.bake.outputs) }}"
+
       - name: Output image digests
         run: |
           echo "Backend image digest: ${{ steps.bake.outputs.backend.digest }}"
