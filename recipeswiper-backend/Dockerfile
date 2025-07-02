@@ -4,8 +4,6 @@ COPY --chown=1001:0 src/main/liberty/config/ /config/
 
 COPY --chown=1001:0 libs/mariadb-java-client-3.5.2.jar /config/resources/
 
-RUN echo "Inhalt des aktuellen Build-Kontextes:" && ls -R .
-
 RUN features.sh
 
 COPY --chown=1001:0 target/*.war /config/apps
