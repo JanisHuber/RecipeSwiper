@@ -19,6 +19,9 @@ jobs:
       id-token: write
 
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Zeige Dateien im Build-Kontext
         run: |
           echo "🗂️ Dateien im Root-Verzeichnis:"
@@ -27,9 +30,6 @@ jobs:
           ls -la recipeswiper-backend/
           echo "📁 Dateien im backend/target-Verzeichnis:"
           ls -la recipe-swiperbackend/target || echo "❌ backend/target existiert nicht"
-
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
