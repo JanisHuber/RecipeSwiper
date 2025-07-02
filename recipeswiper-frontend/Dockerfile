@@ -8,8 +8,6 @@ RUN npm install
 
 COPY . .
 
-RUN echo "📂 Verzeichnisstruktur:" && find . -type f | sort
-
 RUN npm run build --prod
 
 # Serve Stage
