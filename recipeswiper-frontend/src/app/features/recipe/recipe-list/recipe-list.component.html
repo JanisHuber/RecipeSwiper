@@ -1,0 +1,17 @@
+<div>
+  @if (currentRecipe) {
+  <app-recipe-card
+    [recipe]="currentRecipe"
+    (like)="onLike()"
+    (dislike)="onDislike()"
+  ></app-recipe-card>
+  <app-vote-bar
+    (like)="onLike()"
+    (dislike)="onDislike()"
+  ></app-vote-bar>
+  } @else {
+  <div class="text-center py-8">
+    <p class="text-gray-500">No recipes available</p>
+  </div>
+  }
+</div>

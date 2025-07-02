@@ -1,0 +1,5 @@
+@if (user) {
+  <app-user-profile [user]="user" [userToken]="userToken"></app-user-profile>
+} @else {
+  <app-create-user></app-create-user>
+}

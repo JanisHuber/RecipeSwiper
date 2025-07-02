@@ -33,7 +33,7 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
 
   frontend:
-    build: ./recipeswiper-frontend/recipeswiper-frontend
+    build: ./recipeswiper-frontend
     depends_on:
       - backend
     ports:

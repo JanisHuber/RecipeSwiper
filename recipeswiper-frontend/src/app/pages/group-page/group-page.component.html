@@ -1,0 +1,21 @@
+<div class="min-h-screen bg-gray-100">
+  <div class="container mx-auto px-6 py-8">
+    <div class="max-w-2xl mx-auto">
+      <app-invitemember [groupToken]="groupToken"></app-invitemember>
+      
+      <app-vote-summary 
+        [resultRecipes]="resultRecipes">
+      </app-vote-summary>
+    </div>
+  </div>
+
+  <div class="flex justify-center mt-6 mb-8">
+    <button 
+      class="flex items-center justify-center w-full max-w-2xl bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded transition-colors shadow text-lg"
+      (click)="startSwiping()"
+    >
+      Start Swiping
+      <span class="ml-2">&rarr;</span>
+    </button>
+  </div>
+</div>
