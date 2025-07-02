@@ -41,18 +41,25 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build and push images from docker-compose.yml
+      - name: Build and push all images
         id: bake
         uses: docker/bake-action@v4
         with:
           files: docker-compose.yml
           push: true
           set: |
-            *.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            backend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-backend:latest
+            frontend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-frontend:latest
 
-      - name: Generate artifact attestation
+      - name: Attest backend image
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          subject-digest: ${{ steps.bake.outputs.digest }}
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-backend
+          subject-digest: ${{ steps.bake.outputs.backend.digest }}
+          push-to-registry: tr
+      - name: Attest frontend image
+        uses: actions/attest-build-provenance@v2
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_PREFIX }}-frontend
+          subject-digest: ${{ steps.bake.outputs.frontend.digest }}
           push-to-registry: true
