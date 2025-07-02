@@ -50,6 +50,10 @@ jobs:
           set: |
             backend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend:latest
             frontend.tags=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend:latest
+      - name: Output image digests
+        run: |
+          echo "Backend image digest: ${{ steps.bake.outputs.backend.digest }}"
+          echo "Frontend image digest: ${{ steps.bake.outputs.frontend.digest }}"
 
       - name: Attest backend image
         uses: actions/attest-build-provenance@v2
