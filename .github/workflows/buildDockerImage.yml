@@ -57,6 +57,15 @@ jobs:
           echo "All outputs:"
           echo "${{ toJson(steps.bake.outputs) }}"
 
+      - name: Extract image digests from Bake metadata
+        id: extract-digests
+        run: |
+          BACKEND_DIGEST=$(jq -r '.["backend"]["containerimage.digest"]' ${{ steps.bake.outputs.metadata-file }})
+          FRONTEND_DIGEST=$(jq -r '.["frontend"]["containerimage.digest"]' ${{ steps.bake.outputs.metadata-file }})
+          echo "backend_digest=$BACKEND_DIGEST" >> "$GITHUB_OUTPUT"
+          echo "frontend_digest=$FRONTEND_DIGEST" >> "$GITHUB_OUTPUT"
+
+
       - name: Output image digests
         run: |
           echo "Backend image digest: ${{ steps.bake.outputs.backend.digest }}"
@@ -66,12 +75,12 @@ jobs:
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-backend
-          subject-digest: ${{ steps.bake.outputs.backend.digest }}
+          subject-digest: ${{ steps.extract-digests.outputs.backend_digest }}
           push-to-registry: 'true'
 
       - name: Attest frontend image
         uses: actions/attest-build-provenance@v2
         with:
           subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-frontend
-          subject-digest: ${{ steps.bake.outputs.frontend.digest }}
+          subject-digest: ${{ steps.extract-digests.outputs.frontend_digest }}
           push-to-registry: 'true'
