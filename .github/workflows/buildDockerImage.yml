@@ -38,7 +38,7 @@ jobs:
           echo "📁 Dateien im backend-Verzeichnis:"
           ls -la recipeswiper-backend/
           echo "📁 Dateien im backend/target-Verzeichnis:"
-          ls -la recipe-swiperbackend/target || echo "❌ backend/target existiert nicht"
+          ls -la recipeswiper-backend/target || echo "❌ backend/target existiert nicht"
 
       - name: Log in to the Container registry
         uses: docker/login-action@v3
