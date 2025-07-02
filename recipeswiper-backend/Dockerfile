@@ -1,6 +1,6 @@
 FROM icr.io/appcafe/open-liberty:kernel-slim-java21-openj9-ubi-minimal
 
-RUN ls -R / && echo "---" && ls -R .
+RUN echo "Inhalt des aktuellen Build-Kontextes:" && ls -R .
 
 COPY --chown=1001:0 src/main/liberty/config/ /config/
 
