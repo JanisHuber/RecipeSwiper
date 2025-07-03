@@ -43,9 +43,9 @@
                     javax.sql.XADataSource="org.mariadb.jdbc.MariaDbDataSource"
                     javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MariaDbDataSource"/>
 
-        <properties url="jdbc:mariadb://recipeswiper-db-1:3306/recipeswiper"
-                    user="recipeuser"
-                    password="recipe123"/>
+        <properties url="jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}"
+                    user="${DB_USER}"
+                    password="${DB_PASSWORD}"/>
     </dataSource>
 
     <library id="mariadb">
