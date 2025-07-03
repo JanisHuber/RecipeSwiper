@@ -13,13 +13,13 @@ services:
       - "3306:3306"
 
   backend:
-    image: ghcr.io/janishuber/recipeswiper-backend:latest
+    image: recipeswiper-backend:test
     environment:
       DB_HOST: db
       DB_PORT: 3306
       DB_NAME: recipeswiper
       DB_USER: recipeuser
-      DB_PASSWORD: recipe1234
+      DB_PASSWORD: recipe123
     ports:
       - "9080:9080"
     depends_on:
