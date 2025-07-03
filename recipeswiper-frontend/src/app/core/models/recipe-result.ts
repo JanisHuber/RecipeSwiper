@@ -1,4 +1,4 @@
-import { VoteResult } from "./VoteResult";
+import { VoteResult } from "./vote-result";
 
 export interface RecipeResult {
     recipeId: number;

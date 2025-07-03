@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecipeswiperService } from '../../core/services/recipeswiper.service';
 import { VoteSummaryComponent } from '../../features/voting/vote-summary/vote-summary.component';
-import { RecipeResult } from '../../core/models/RecipeResult';
+import { RecipeResult } from '../../core/models/recipe-result';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InvitememberComponent } from '../../features/group/invitemember/invitemember.component';
 
@@ -29,7 +29,7 @@ export class GroupPageComponent {
   ngOnInit() {
     this.groupToken = this.route.snapshot.params['groupToken'];
     if (this.groupToken) {
-      console.log('fetching group results')
+      console.log('fetching group results');
       this.recipeswiperService
         .getResultRecipes(this.groupToken)
         .subscribe((recipes) => {

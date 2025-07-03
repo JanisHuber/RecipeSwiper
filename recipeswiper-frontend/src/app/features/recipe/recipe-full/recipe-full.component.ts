@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Recipe } from '../../../core/models/Recipe';
 
-
 @Component({
   selector: 'app-recipe-full',
   standalone: true,

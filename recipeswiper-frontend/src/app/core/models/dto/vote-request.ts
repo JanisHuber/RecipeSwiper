@@ -1,8 +1,7 @@
-import { VoteType } from "../VoteType";
+import { VoteType } from '../vote-type';
 
 export interface VoteRequest {
-    userToken: string;
-    recipeId: number;
-    voteType: VoteType;
+  userToken: string;
+  recipeId: number;
+  voteType: VoteType;
 }
-

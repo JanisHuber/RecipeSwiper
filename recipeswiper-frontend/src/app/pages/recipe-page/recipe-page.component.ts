@@ -4,9 +4,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Recipe } from '../../core/models/Recipe';
 import { CommonModule } from '@angular/common';
 import { RecipeListComponent } from '../../features/recipe/recipe-list/recipe-list.component';
-import { VoteType } from '../../core/models/VoteType';
+import { VoteType } from '../../core/models/vote-type';
 import { ErrorPopupService } from '../../core/services/error-popup.service';
-
 
 @Component({
   selector: 'app-recipe-page',

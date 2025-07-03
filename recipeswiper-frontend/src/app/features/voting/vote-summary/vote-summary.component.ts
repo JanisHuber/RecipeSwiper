@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { RecipeResult } from '../../../core/models/RecipeResult';
+import { RecipeResult } from '../../../core/models/recipe-result';
 import { Router } from '@angular/router';
-
 
 @Component({
   selector: 'app-vote-summary',

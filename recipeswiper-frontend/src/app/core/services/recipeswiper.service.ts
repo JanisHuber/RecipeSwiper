@@ -9,8 +9,8 @@ import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
 import { Recipe } from '../models/Recipe';
-import { VoteType } from '../models/VoteType';
-import { RecipeResult } from '../models/RecipeResult';
+import { VoteType } from '../models/vote-type';
+import { RecipeResult } from '../models/recipe-result';
 import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })

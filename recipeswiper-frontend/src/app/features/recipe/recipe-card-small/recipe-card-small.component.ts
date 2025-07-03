@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { Recipe } from '../../../core/models/Recipe';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'app-recipe-card-small',
   standalone: true,
