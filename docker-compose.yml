@@ -5,7 +5,7 @@ services:
       MARIADB_ROOT_PASSWORD: root123
       MARIADB_DATABASE: recipeswiper
       MARIADB_USER: recipeuser
-      MARIADB_PASSWORD: recipe1234
+      MARIADB_PASSWORD: recipe123
     volumes:
       - db_data:/var/lib/mysql
       - ./recipeswiper-database:/docker-entrypoint-initdb.d
@@ -19,7 +19,7 @@ services:
       DB_PORT: 3306
       DB_NAME: recipeswiper
       DB_USER: recipeuser
-      DB_PASSWORD: recipe123
+      DB_PASSWORD: recipe1234
     ports:
       - "9080:9080"
     depends_on:

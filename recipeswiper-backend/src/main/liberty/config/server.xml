@@ -38,7 +38,7 @@
     <!-- Default SSL configuration enables trust for default certificates from the Java runtime -->
     <ssl id="defaultSSLConfig" trustDefaultCerts="true"/>
 
-    <dataSource id="recipeswiper" jndiName="jdbc/recipeswiper">
+    <dataSource id="recipeswiper" jndiName="jdbc/recipeswiper" includeEnvVars="true">
         <jdbcDriver libraryRef="mariadb" javax.sql.DataSource="org.mariadb.jdbc.MariaDbDataSource"
                     javax.sql.XADataSource="org.mariadb.jdbc.MariaDbDataSource"
                     javax.sql.ConnectionPoolDataSource="org.mariadb.jdbc.MariaDbDataSource"/>
