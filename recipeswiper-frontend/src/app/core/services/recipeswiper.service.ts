@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 import { catchError, Observable, of, tap, throwError } from 'rxjs';
 import { UserService } from './user.service';
 import { Router } from '@angular/router';
-import { Recipe } from '../models/recipe';
+import { Recipe } from '../models/Recipe';
 import { VoteType } from '../models/vote-type';
 import { RecipeResult } from '../models/recipe-result';
 import { environment } from '../../../environments/environment';
