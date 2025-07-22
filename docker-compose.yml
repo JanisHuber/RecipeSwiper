@@ -13,7 +13,7 @@ services:
       - "3306:3306"
 
   backend:
-    image: recipeswiper-backend:test
+    image: recipeswiper-backend:latest
     environment:
       DB_HOST: db
       DB_PORT: 3306
