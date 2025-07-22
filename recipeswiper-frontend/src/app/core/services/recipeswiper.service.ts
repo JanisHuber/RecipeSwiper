@@ -15,7 +15,8 @@ import { environment } from '../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class RecipeswiperService {
-  private apiUrl = environment.apiUrl;
+  //private apiUrl = environment.apiUrl;
+  private apiUrl = 'http://91.99.218.208:9080/api/recipeswiper'
   private httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
